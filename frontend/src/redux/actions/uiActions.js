@@ -1,5 +1,0 @@
-export const TOGGLE_LOGIC = "TOGGLE_LOGIC";
-export const TOGGLE_COST_ESTIMATE = "TOGGLE_COST_ESTIMATE";
-
-export const START_LOADING = "START_LOADING";
-export const STOP_LOADING = "STOP_LOADING";
