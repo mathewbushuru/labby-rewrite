@@ -1,6 +1,6 @@
 import mysql from "mysql2";
 
-const connectionPool = mysql
+const dbConnectionPool = mysql
   .createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -12,4 +12,4 @@ const connectionPool = mysql
   })
   .promise();
 
-export default connectionPool;
+export default dbConnectionPool;
