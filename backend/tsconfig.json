@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "types": ["node"],
+    // "noErrorTruncation": true     // uncomment to show full type in vscode hover intellisense
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/tests/**/*"],
+  "ts-node": {
+    "esm": true
+  }
+}
