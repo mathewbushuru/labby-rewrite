@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const navigate = useNavigate();
   return (
-    <div className="flex h-screen flex-col sm:flex-row">
-      {/* Desktop left   */}
-      <div className="mt-36  flex-1 space-y-5">
+    <div className="flex h-screen p-8 sm:p-0">
+      {/* Desktop left  */}
+      <div className="background-image hidden flex-1 bg-primaryDark sm:inline-block" />
+
+      {/* Desktop Right   */}
+      <div className="sm:mt-36  flex-1 space-y-5">
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
-        <p className="mx-auto max-w-sm text-left text-2xl font-semibold">
+        <p className="mx-auto max-w-sm text-center text-2xl font-semibold sm:text-left">
           Log in
         </p>
 
@@ -16,7 +19,7 @@ export default function LoginPage() {
           <input
             type="text"
             placeholder="Email"
-            className="w-full border-b border-gray py-2 text-sm text-gray outline-none"
+            className="w-full border-b rounded-none border-gray py-2 text-sm text-gray outline-none"
             autoFocus
           />
         </div>
@@ -25,11 +28,11 @@ export default function LoginPage() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full border-b border-gray py-2 text-sm text-gray outline-none"
+            className="w-full border-b rounded-none border-gray py-2 text-sm text-gray outline-none"
           />
         </div>
 
-        <p className="mx-auto max-w-sm cursor-pointer text-left text-sm text-gray">
+        <p className="mx-auto max-w-sm cursor-pointer text-center text-sm text-gray sm:text-left">
           Forgot my Password
         </p>
 
@@ -49,9 +52,6 @@ export default function LoginPage() {
           </span>
         </p>
       </div>
-
-      {/* Desktop right  */}
-      <div className="background-image flex-1 bg-primaryDark" />
     </div>
   );
 }
