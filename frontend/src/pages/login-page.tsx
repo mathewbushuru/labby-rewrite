@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import { InputBorderBottom } from "@/components/ui/input-border-bottom";
+
 export default function LoginPage() {
   const navigate = useNavigate();
   return (
@@ -8,7 +10,7 @@ export default function LoginPage() {
       <div className="background-image hidden flex-1 bg-primaryDark sm:inline-block" />
 
       {/* Desktop Right   */}
-      <div className="sm:mt-36  flex-1 space-y-5">
+      <div className="flex-1  space-y-5 sm:mt-36">
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
         <p className="mx-auto max-w-sm text-center text-2xl font-semibold sm:text-left">
@@ -16,20 +18,10 @@ export default function LoginPage() {
         </p>
 
         <div className="mx-auto max-w-sm">
-          <input
-            type="text"
-            placeholder="Email"
-            className="w-full border-b rounded-none border-gray py-2 text-sm text-gray outline-none"
-            autoFocus
-          />
+          <InputBorderBottom type="text" placeholder="Email" autoFocus />
         </div>
-
         <div className="mx-auto max-w-sm">
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border-b rounded-none border-gray py-2 text-sm text-gray outline-none"
-          />
+          <InputBorderBottom type="password" placeholder="Password" />
         </div>
 
         <p className="mx-auto max-w-sm cursor-pointer text-center text-sm text-gray sm:text-left">

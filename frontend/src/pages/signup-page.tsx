@@ -1,48 +1,30 @@
 import { useNavigate } from "react-router-dom";
 
+import { InputBorderBottom } from "@/components/ui/input-border-bottom";
+
 export default function SignupPage() {
   const navigate = useNavigate();
   return (
     <div className="flex h-screen p-8 sm:p-0">
       {/* Desktop left   */}
-      <div className="sm:mt-32  flex-1 space-y-7">
+      <div className="flex-1  space-y-7 sm:mt-32">
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
-        <p className="mx-auto max-w-sm text-center sm:text-left text-2xl font-semibold">
+        <p className="mx-auto max-w-sm text-center text-2xl font-semibold sm:text-left">
           Create an account
         </p>
 
         <div className="mx-auto max-w-sm">
-          <input
-            type="text"
-            placeholder="Email"
-            className="w-full border-b border-gray rounded-none py-2 text-sm text-gray outline-none"
-            autoFocus
-          />
+          <InputBorderBottom type="text" placeholder="Email" autoFocus />
         </div>
-
         <div className="mx-auto max-w-sm">
-          <input
-            type="text"
-            placeholder="First name"
-            className="w-full border-b border-gray py-2 rounded-none text-sm text-gray outline-none"
-          />
+          <InputBorderBottom type="text" placeholder="First name" autoFocus />
         </div>
-
         <div className="mx-auto max-w-sm">
-          <input
-            type="text"
-            placeholder="Last name"
-            className="w-full border-b border-gray py-2 text-sm rounded-none text-gray outline-none"
-          />
+          <InputBorderBottom type="text" placeholder="Last name" autoFocus />
         </div>
-
         <div className="mx-auto max-w-sm">
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border-b border-gray py-2 text-sm rounded-none text-gray outline-none"
-          />
+          <InputBorderBottom type="password" placeholder="Password" autoFocus />
         </div>
 
         <div className="mx-auto flex max-w-sm justify-center">
@@ -62,8 +44,8 @@ export default function SignupPage() {
         </p>
       </div>
 
-        {/* Desktop left  */}
-        <div className="background-image flex-1 bg-primaryDark hidden sm:inline-block" />
+      {/* Desktop left  */}
+      <div className="background-image hidden flex-1 bg-primaryDark sm:inline-block" />
     </div>
   );
 }
