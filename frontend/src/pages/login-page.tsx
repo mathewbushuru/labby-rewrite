@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-import { InputBorderBottom } from "@/components/ui/input-border-bottom";
+import { InputBorderBottom } from "@/components/ui/input";
+import {
+  PrimaryButton,
+  PrimaryButtonLink,
+  SecondaryButtonLink,
+} from "@/components/ui/button";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -24,24 +29,20 @@ export default function LoginPage() {
           <InputBorderBottom type="password" placeholder="Password" />
         </div>
 
-        <p className="mx-auto max-w-sm cursor-pointer text-center text-sm text-gray sm:text-left">
-          Forgot my Password
-        </p>
+        <div className="mx-auto max-w-sm text-sm">
+          <SecondaryButtonLink>Forgot my password</SecondaryButtonLink>
+        </div>
 
         <div className="mx-auto flex max-w-sm justify-center">
-          <button className="rounded-md bg-primary px-8 py-1  text-white">
-            Log in
-          </button>
+          <PrimaryButton>Log in</PrimaryButton>
         </div>
 
         <p className="mx-auto max-w-sm cursor-pointer text-center text-sm text-textGray">
           Not a user? Create an account{" "}
-          <span
-            className="cursor-ponter text-primaryDark"
-            onClick={() => navigate("/signup")}
-          >
-            here.
-          </span>
+          <PrimaryButtonLink onClick={() => navigate("/signup")}>
+            here
+          </PrimaryButtonLink>
+          .
         </p>
       </div>
     </div>
