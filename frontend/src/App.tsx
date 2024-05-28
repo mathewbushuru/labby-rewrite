@@ -1,9 +1,9 @@
-import LoginScreen from "@/screens/login-screen";
+import LoginPage from "@/pages/login-page";
 
 function App() {
   return (
     <div className="">
-      <LoginScreen />
+      <LoginPage />
     </div>
   );
 }
