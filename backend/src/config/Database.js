@@ -10,6 +10,17 @@ const configuration = {
   port: process.env.RDS_PORT,
 };
 
-const connectionPool = mysql.createPool(configuration);
+export const oldConnectionPool = mysql.createPool(configuration);
+
+const connectionPool = mysql
+  .createPool({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_NAME,
+    ssl: {
+      rejectUnauthorized: process.env.environment !== "development",
+    },
+  });
 
 export default connectionPool;

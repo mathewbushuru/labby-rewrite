@@ -1,3 +1,9 @@
+SHOW DATABASES;
+
+SHOW TABLES;
+
+SELECT * FROM users;
+
 USE `labby`;
 
 DROP TABLE IF EXISTS `users`;
