@@ -8,11 +8,12 @@ DELIMITER $$
 CREATE PROCEDURE `createUsers` ()
 BEGIN
 CREATE TABLE `users` (
-    user_id VARCHAR(50) NOT NULL,
+    user_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255),
-    hashed_password VARCHAR(255),
-    PRIMARY KEY (`user_id`)
+    hashed_password VARCHAR(255)
 );
 END$$
 
 DELIMITER ;
+
+CALL createUsers();
