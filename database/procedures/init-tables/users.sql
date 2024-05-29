@@ -9,8 +9,8 @@ CREATE PROCEDURE `createUsers` ()
 BEGIN
 CREATE TABLE `users` (
     user_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255),
-    hashed_password VARCHAR(255)
+    email VARCHAR(255) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL
 );
 END$$
 

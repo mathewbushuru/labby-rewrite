@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Routes
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
+app.get("/", (req: Request, res: Response, _next: NextFunction) => {
   return res.json({ message: "Checklists API" });
 });
 
@@ -24,7 +24,7 @@ app.use("/user", userRoutes);
 app.use("/test", testRoutes); 
 
 // Error handler
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("[Global Error Handler]:", error);
 
   return res.status(500).json({
