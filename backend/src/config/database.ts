@@ -12,4 +12,14 @@ const dbConnectionPool = mysql
   })
   .promise();
 
+export async function logMySQLVersion() {
+  const connection = await dbConnectionPool.getConnection();
+  try {
+    const [rows] = await connection.query("SELECT VERSION()");
+    console.log(rows);
+  } finally {
+    connection.release();
+  }
+}
+
 export default dbConnectionPool;
