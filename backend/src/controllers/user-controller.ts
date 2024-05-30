@@ -21,42 +21,42 @@ export default class UserController {
   /**
    * Public methods
    */
-  async signUpUser(req: Request, res: Response) {
-    const createUserData = req.body as Omit<NewUserType, "hashed_password"> & {
+  async signupUser(req: Request, res: Response) {
+    const signupRequestData = req.body as Omit<NewUserType, "hashed_password"> & {
       password: string;
     };
 
-    if (!createUserData) {
+    if (!signupRequestData) {
       return res
         .status(400)
         .json({ errorMessage: "User data is required sign up." });
     }
 
-    if (!createUserData.email) {
+    if (!signupRequestData.email) {
       return res
         .status(400)
         .json({ errorMessage: "Email is required to sign up." });
     }
 
-    if (!this.validateEmail(createUserData.email)) {
+    if (!this.validateEmail(signupRequestData.email)) {
       return res.status(400).json({ errorMessage: "Email is invalid" });
     }
 
-    if (!createUserData.password) {
+    if (!signupRequestData.password) {
       return res
         .status(400)
         .json({ errorMessage: "Password is required to sign up." });
     }
 
-    const hashedPassword = await this.hashPassword(createUserData.password);
+    const hashedPassword = await this.hashPassword(signupRequestData.password);
 
-    const signupData: NewUserType = {
-      email: createUserData.email,
+    const signupDatabaseData: NewUserType = {
+      email: signupRequestData.email,
       hashed_password: hashedPassword,
     };
 
     try {
-      const newUserData = await userModel.addUser(signupData);
+      const newUserData = await userModel.addUser(signupDatabaseData);
 
       const { hashed_password, ...usedDataWithoutPassword } = newUserData;
 
