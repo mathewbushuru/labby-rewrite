@@ -7,15 +7,15 @@ import {
 } from "react-redux";
 
 import authReducer from "@/store/features/auth-slice";
-// import acmeAdminApi from "@/api";
+import checklistsApi from "@/api";
 
 export const store = configureStore({
   reducer: {
     adminAuth: authReducer,
-    // [acmeAdminApi.reducerPath]: acmeAdminApi.reducer,
+    [checklistsApi.reducerPath]: checklistsApi.reducer,
   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(acmeAdminApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(checklistsApi.middleware),
 });
 
 setupListeners(store.dispatch);
