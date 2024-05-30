@@ -8,7 +8,7 @@ export class UserModel {
     try {
       await dbConnectionPool.query("CALL addUser(?,?)", [
         newUser.email,
-        newUser.password,
+        newUser.hashed_password,
       ]);
 
       const newUserDataInDb = await this.loadSingleUserByEmail(newUser.email);
