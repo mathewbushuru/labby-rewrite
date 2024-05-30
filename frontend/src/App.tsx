@@ -20,6 +20,10 @@ const publicRouter = createBrowserRouter([
     path: "/signup",
     element: <SignupPage />,
   },
+  {
+    path: "/tickets",
+    element: <>Tickets</>,
+  },
 ]);
 
 function AppRouter() {

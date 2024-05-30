@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { type RootState } from "@/store/store";
-import { type LoginRequestType, type BackendUserType } from "@/types/user";
+import { type LoginRequestType, type LoginResponseType } from "@/types/user";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -26,9 +26,9 @@ const checklistsApi = createApi({
       query: () => `/`,
     }),
 
-    adminLogin: builder.mutation<BackendUserType, LoginRequestType>({
+    login: builder.mutation<LoginResponseType, LoginRequestType>({
       query: (credentials) => ({
-        url: "/auth/login",
+        url: "/user/login",
         method: "POST",
         body: credentials,
       }),
@@ -37,6 +37,6 @@ const checklistsApi = createApi({
   }),
 });
 
-export const { useGetRootQuery, useAdminLoginMutation } = checklistsApi;
+export const { useGetRootQuery, useLoginMutation } = checklistsApi;
 
 export default checklistsApi;
