@@ -9,3 +9,13 @@ export type NewUserType = {
   hashed_password: string;
   user_id?: number;
 };
+
+export type UserLoginRequestType = {
+  email: string;
+  password: string;
+};
+
+export type UserLoginSuccessResponseType = Omit<UserType, "hashed_password"> & {
+  jwtToken: string;
+  message: string;
+};
