@@ -10,7 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "types": ["node"],
-    // "noErrorTruncation": true     // uncomment to show full type in vscode hover intellisense
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "src/tests/**/*"],

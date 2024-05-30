@@ -21,9 +21,16 @@ app.get("/", (req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.use("/user", userRoutes);
-app.use("/test", testRoutes); 
+app.use("/test", testRoutes);
 
-// Error handler
+// 404 route handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const errorMessage = "404 error - Route not found";
+  console.error(errorMessage);
+  return res.status(404).json({ errorMessage });
+});
+
+// Error handler route
 app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("[Global Error Handler]:", error);
 
