@@ -11,7 +11,7 @@ import checklistsApi from "@/api";
 
 export const store = configureStore({
   reducer: {
-    adminAuth: authReducer,
+    auth: authReducer,
     [checklistsApi.reducerPath]: checklistsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

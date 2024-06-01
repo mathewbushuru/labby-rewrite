@@ -13,14 +13,14 @@ const checklistsApi = createApi({
     baseUrl: SERVER_URL,
     prepareHeaders: (headers, { getState }) => {
       // if token in redux store, use it for all authenticated requests
-      const token = (getState() as RootState).adminAuth.token;
+      const token = (getState() as RootState).auth.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ["product"],
+  tagTypes: [],
   endpoints: (builder) => ({
     getRoot: builder.query<string, void>({
       query: () => `/`,
