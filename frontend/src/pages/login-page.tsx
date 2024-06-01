@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useLoginMutation } from "@/api";
 import { useAppDispatch } from "@/store/store";
@@ -15,10 +15,13 @@ import {
 import { LoginRequestType } from "@/types/user";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { state } = useLocation();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(
+    state && state.signupEmail ? state.signupEmail : "",
+  );
   const [password, setPassword] = useState("");
 
   const [loginTrigger, { isLoading }] = useLoginMutation();
@@ -87,7 +90,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mx-auto flex max-w-sm justify-center">
-          <PrimaryButton onClick={handleLogin} disabled={isLoading}>
+          <PrimaryButton type="submit" disabled={isLoading}>
             {isLoading ? "Loading" : "Log in"}
           </PrimaryButton>
         </div>

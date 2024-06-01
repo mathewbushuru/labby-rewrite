@@ -60,6 +60,8 @@ export default class UserController {
 
       const { hashed_password, ...usedDataWithoutPassword } = newUserData;
 
+      console.log(`[${signupDatabaseData.email}]: Sign up successful`)
+
       return res.status(201).json(usedDataWithoutPassword);
     } catch (error: any) {
       const errorMessage = error?.message || "Something went wrong.";
@@ -115,7 +117,7 @@ export default class UserController {
         return res.status(401).json({ errorMessage });
       }
 
-      console.log(`${loginRequestData.email}: Login successful`);
+      console.log(`[${loginRequestData.email}]: Login successful`);
 
       const jwtToken = jwt.sign(
         { userId: userDataWithoutPassword.user_id },
