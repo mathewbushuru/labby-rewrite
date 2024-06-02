@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { toast } from "sonner";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DragStart,
+  type DragUpdate,
+  type DropResult,
+} from "@hello-pangea/dnd";
 
 type TaskType = {
   id: string;
@@ -8,7 +16,7 @@ type TaskType = {
 
 type TasksColumnType = {
   id: string;
-  title: string;
+  name: string;
   taskIds: string[];
 };
 
@@ -29,22 +37,22 @@ const initialDndData: DragDropDataType = {
   columns: {
     "column-1": {
       id: "column-1",
-      title: "To Do",
+      name: "To Do",
       taskIds: ["task-3", "task-4"],
     },
     "column-2": {
       id: "column-2",
-      title: "In progress",
+      name: "In progress",
       taskIds: ["task-1", "task-2"],
     },
     "column-3": {
       id: "column-3",
-      title: "Done",
+      name: "Done",
       taskIds: ["task-5"],
     },
     "column-4": {
       id: "column-4",
-      title: "Backlog",
+      name: "Backlog",
       taskIds: [],
     },
   },
@@ -54,14 +62,29 @@ const initialDndData: DragDropDataType = {
 export default function TasksPage() {
   const [dndData, _setDndData] = useState<DragDropDataType>(initialDndData);
 
-  const dragStartHandler = () => {
-    console.log("Drag start");
+  const dragStartHandler = (dragStartData: DragStart) => {
+    const { draggableId, source } = dragStartData;
+    const taskName = dndData.tasks[draggableId].taskName;
+    const sourceColumnName = dndData.columns[source.droppableId].name;
+    toast.info(
+      `Dragging task '${taskName}' from column '${sourceColumnName}'.`,
+    );
   };
-  const dragUpdateHandler = () => {
-    console.log("Drag update");
-  };
-  const dragEndHandler = () => {
-    console.log("Drag end");
+
+  const dragUpdateHandler = (_dragUpdateData: DragUpdate) => {};
+
+  const dragEndHandler = (dropResultData: DropResult) => {
+    const { draggableId, source, destination } = dropResultData;
+    if (destination === null) {
+      toast.error("Drag cancelled.");
+      return;
+    }
+    const taskName = dndData.tasks[draggableId].taskName;
+    const sourceColumnName = dndData.columns[source.droppableId].name;
+    const destinationColumnName = dndData.columns[destination.droppableId].name;
+    toast.success(
+      `Dropped task '${taskName}' at '${destinationColumnName}' from '${sourceColumnName}'.`,
+    );
   };
 
   return (
@@ -124,7 +147,7 @@ function TaskColumn({
           className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4"
         >
           <h3 className="mb-2 font-semibold" {...provided.dragHandleProps}>
-            {columnData.title}
+            {columnData.name}
           </h3>
           <Droppable
             droppableId={columnData.id}
