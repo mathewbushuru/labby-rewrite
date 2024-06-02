@@ -2,11 +2,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 import { Toaster } from "sonner";
 
-import { store } from "@/store/store";
+import { store, useAppSelector } from "@/store/store";
 import { useGetRootQuery } from "@/api";
 
 import LoginPage from "@/pages/login-page";
 import SignupPage from "@/pages/signup-page";
+import TicketPage from "@/pages/ticket-page";
 
 const publicRouter = createBrowserRouter([
   {
@@ -21,16 +22,24 @@ const publicRouter = createBrowserRouter([
     path: "/signup",
     element: <SignupPage />,
   },
+]);
+
+const privateRouter = createBrowserRouter([
   {
-    path: "/tickets",
-    element: <>Tickets</>,
+    path: "/",
+    element: <TicketPage />,
   },
 ]);
 
 function AppRouter() {
   const { data } = useGetRootQuery();
   data && console.log(data);
-  return <RouterProvider router={publicRouter} />;
+
+  const user = useAppSelector((state) => state.auth.user);
+
+  const appRouter = user ? privateRouter : publicRouter;
+
+  return <RouterProvider router={appRouter} />;
 }
 
 function App() {

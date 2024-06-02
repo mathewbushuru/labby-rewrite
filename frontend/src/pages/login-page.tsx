@@ -43,7 +43,7 @@ export default function LoginPage() {
 
       toast.success(message);
 
-      navigate("/tickets");
+      navigate("/");
       dispatch(setCredentials({ user, token: jwtToken }));
     } catch (error: any) {
       console.error(error);
