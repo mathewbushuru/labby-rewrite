@@ -7,7 +7,7 @@ import { useGetRootQuery } from "@/api";
 
 import LoginPage from "@/pages/login-page";
 import SignupPage from "@/pages/signup-page";
-import TicketPage from "@/pages/ticket-page";
+import TasksPage from "@/pages/tasks-page";
 
 const publicRouter = createBrowserRouter([
   {
@@ -27,7 +27,7 @@ const publicRouter = createBrowserRouter([
 const privateRouter = createBrowserRouter([
   {
     path: "/",
-    element: <TicketPage />,
+    element: <TasksPage />,
   },
 ]);
 

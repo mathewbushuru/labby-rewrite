@@ -20,6 +20,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    // Custom
+    // "noErrorTruncation": true,
+
     // Absolute paths
     "baseUrl": ".",
     "paths": {
