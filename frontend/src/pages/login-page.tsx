@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 import { useLoginMutation } from "@/api";
 import { useAppDispatch } from "@/store/store";
@@ -40,10 +41,18 @@ export default function LoginPage() {
 
       const { jwtToken, message, ...user } = loginResponse;
 
+      toast.success(message);
+
       navigate("/tickets");
       dispatch(setCredentials({ user, token: jwtToken }));
     } catch (error: any) {
       console.error(error);
+
+      const errorMessage = error?.data?.errorMessage ||  "Something went wrong.";
+      toast.error("Login error", {
+        description: errorMessage
+      });
+
       setPassword("");
     }
   };

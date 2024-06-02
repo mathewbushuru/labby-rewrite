@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 import { useSignupMutation } from "@/api";
 
@@ -34,11 +35,19 @@ export default function SignupPage() {
 
     try {
       await signupTrigger(signupData).unwrap();
+
+      toast.success("Account creation successful. Log in.")
+
       navigate("/login", {
         state: { signupEmail: email },
       });
     } catch (error: any) {
       console.log(error);
+
+      const errorMessage = error?.data?.errorMessage ||  "Something went wrong.";
+      toast.error("Signup error", {
+        description: errorMessage
+      });
     }
   };
 

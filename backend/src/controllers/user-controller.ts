@@ -113,7 +113,7 @@ export default class UserController {
       );
 
       if (!passwordMatches) {
-        const errorMessage = "Log in failed, incorrect password. Please try again.";
+        const errorMessage = "Incorrect password, please try again.";
         return res.status(401).json({ errorMessage });
       }
 
