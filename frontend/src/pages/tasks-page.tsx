@@ -9,6 +9,8 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
+import SideNavbar from "@/components/side-navbar";
+
 type TaskType = {
   id: string;
   taskName: string;
@@ -37,23 +39,23 @@ const initialDndData: DragDropDataType = {
   columns: {
     "column-1": {
       id: "column-1",
-      name: "To Do",
-      taskIds: ["task-3", "task-4"],
+      name: "Adopt Me",
+      taskIds: ["task-4"],
     },
     "column-2": {
       id: "column-2",
-      name: "In Progress",
-      taskIds: ["task-1", "task-2"],
+      name: "To Do",
+      taskIds: ["task-3"],
     },
     "column-3": {
       id: "column-3",
-      name: "Done",
-      taskIds: ["task-5"],
+      name: "In Progress",
+      taskIds: ["task-1", "task-2"],
     },
     "column-4": {
       id: "column-4",
-      name: "Backlog",
-      taskIds: [],
+      name: "Completed",
+      taskIds: ["task-5"],
     },
   },
   columnIdsOrder: ["column-1", "column-2", "column-3", "column-4"],
@@ -147,14 +149,14 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="">
-      Tasks
+    <div className="flex h-screen items-start">
+      <SideNavbar />
       <DragDropContext
         onDragStart={dragStartHandler}
         onDragUpdate={dragUpdateHandler}
         onDragEnd={dragEndHandler}
       >
-        <div className="m-8 flex justify-between rounded-sm border border-sky-200">
+        <div className="m-8 flex flex-1 flex-col rounded-sm border border-sky-200 sm:flex-row sm:justify-between">
           {dndData.columnIdsOrder.map((columnId) => {
             const columnData = dndData.columns[columnId];
             const allTasksInColumn = columnData.taskIds.map(
