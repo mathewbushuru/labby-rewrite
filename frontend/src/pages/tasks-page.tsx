@@ -62,6 +62,30 @@ const initialDndData: DragDropDataType = {
 };
 
 export default function TasksPage() {
+  return (
+    <div className="flex h-screen items-start">
+      <SideNavbar />
+      <div className="flex-1 mx-8 my-10 space-y-6">
+        <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
+
+        <div className="max-w-2xl relative">
+          <img
+            src="/SearchIcon.svg"
+            className="absolute top-2.5 left-2.5 h-5"
+          />
+          <input 
+            className="bg-primaryWhite h-10 pl-10 pr-4 w-full rounded-md outline-none"
+            placeholder="Search..."
+          />
+        </div>
+
+        <TasksBoard />
+      </div>
+    </div>
+  );
+}
+
+function TasksBoard() {
   const [dndData, setDndData] = useState<DragDropDataType>(initialDndData);
 
   const dragStartHandler = (dragStartData: DragStart) => {
@@ -147,32 +171,28 @@ export default function TasksPage() {
       });
     }
   };
-
   return (
-    <div className="flex h-screen items-start">
-      <SideNavbar />
-      <DragDropContext
-        onDragStart={dragStartHandler}
-        onDragUpdate={dragUpdateHandler}
-        onDragEnd={dragEndHandler}
-      >
-        <div className="m-8 flex flex-1 flex-col rounded-sm border border-sky-200 sm:flex-row sm:justify-between">
-          {dndData.columnIdsOrder.map((columnId) => {
-            const columnData = dndData.columns[columnId];
-            const allTasksInColumn = columnData.taskIds.map(
-              (taskId) => dndData.tasks[taskId],
-            );
-            return (
-              <TaskColumn
-                key={columnId}
-                columnData={columnData}
-                allTasksInColumn={allTasksInColumn}
-              />
-            );
-          })}
-        </div>
-      </DragDropContext>
-    </div>
+    <DragDropContext
+      onDragStart={dragStartHandler}
+      onDragUpdate={dragUpdateHandler}
+      onDragEnd={dragEndHandler}
+    >
+      <div className="flex flex-col rounded-sm border border-sky-200 sm:flex-row sm:justify-between">
+        {dndData.columnIdsOrder.map((columnId) => {
+          const columnData = dndData.columns[columnId];
+          const allTasksInColumn = columnData.taskIds.map(
+            (taskId) => dndData.tasks[taskId],
+          );
+          return (
+            <TaskColumn
+              key={columnId}
+              columnData={columnData}
+              allTasksInColumn={allTasksInColumn}
+            />
+          );
+        })}
+      </div>
+    </DragDropContext>
   );
 }
 
