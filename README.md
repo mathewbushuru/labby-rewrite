@@ -75,7 +75,15 @@ Backend will be exposed on port 3000
 
 TODO
 
+###### employee
+
 `labby@ubc.com`
+
+`password`
+
+###### user test accoutn
+
+`jeffbezos@gmail.com` 
 
 `password`
 
