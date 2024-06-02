@@ -66,7 +66,7 @@ export default function TasksPage() {
 
   return (
     <div className="">
-      TicketPage
+      Tasks
       <DragDropContext
         onDragStart={dragStartHandler}
         onDragUpdate={dragUpdateHandler}
@@ -85,62 +85,16 @@ export default function TasksPage() {
             >
               {dndData.columnIdsOrder.map((columnId, index) => {
                 const columnData = dndData.columns[columnId];
+                const allTasksInColumn = columnData.taskIds.map(
+                  (taskId) => dndData.tasks[taskId],
+                );
                 return (
-                  <Draggable
+                  <TaskColumn
                     key={columnId}
-                    draggableId={columnId}
+                    columnData={columnData}
+                    allTasksInColumn={allTasksInColumn}
                     index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        {...provided.draggableProps}
-                        ref={provided.innerRef}
-                        className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4"
-                      >
-                        <h3
-                          className="mb-2 font-semibold"
-                          {...provided.dragHandleProps}
-                        >
-                          {columnData.title}
-                        </h3>
-                        <Droppable
-                          droppableId={columnData.id}
-                          direction="vertical"
-                          type="all-tasks"
-                        >
-                          {(provided, _snapshot) => (
-                            <div
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              {columnData.taskIds.map((taskId, index) => {
-                                const taskData = dndData.tasks[taskId];
-                                return (
-                                  <Draggable
-                                    key={taskId}
-                                    draggableId={taskId}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        ref={provided.innerRef}
-                                        className="bg-white mb-2 p-2 rounded-md"
-                                      >
-                                        {taskData.taskName}
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                );
-                              })}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      </div>
-                    )}
-                  </Draggable>
+                  />
                 );
               })}
               {provided.placeholder}
@@ -149,5 +103,66 @@ export default function TasksPage() {
         </Droppable>
       </DragDropContext>
     </div>
+  );
+}
+
+function TaskColumn({
+  columnData,
+  allTasksInColumn,
+  index,
+}: {
+  columnData: TasksColumnType;
+  allTasksInColumn: TaskType[];
+  index: number;
+}) {
+  return (
+    <Draggable draggableId={columnData.id} index={index}>
+      {(provided) => (
+        <div
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4"
+        >
+          <h3 className="mb-2 font-semibold" {...provided.dragHandleProps}>
+            {columnData.title}
+          </h3>
+          <Droppable
+            droppableId={columnData.id}
+            direction="vertical"
+            type="task"
+          >
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className={`${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
+              >
+                {allTasksInColumn.map((taskData, index) => (
+                  <Task key={taskData.id} taskData={taskData} index={index} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
+      )}
+    </Draggable>
+  );
+}
+
+function Task({ taskData, index }: { taskData: TaskType; index: number }) {
+  return (
+    <Draggable draggableId={taskData.id} index={index}>
+      {(provided) => (
+        <div
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          className="mb-2 rounded-md bg-white p-2"
+        >
+          {taskData.taskName}
+        </div>
+      )}
+    </Draggable>
   );
 }

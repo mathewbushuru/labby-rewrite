@@ -46,7 +46,7 @@ function App() {
   return (
     <ReduxProvider store={store}>
       <AppRouter />
-      <Toaster richColors />
+      <Toaster expand richColors />
     </ReduxProvider>
   );
 }
