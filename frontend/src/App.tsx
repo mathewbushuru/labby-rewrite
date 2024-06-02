@@ -29,6 +29,10 @@ const privateRouter = createBrowserRouter([
     path: "/",
     element: <TasksPage />,
   },
+  {
+    path: "/*",
+    element: <TasksPage />,
+  },
 ]);
 
 function AppRouter() {
