@@ -42,7 +42,7 @@ const initialDndData: DragDropDataType = {
     },
     "column-2": {
       id: "column-2",
-      name: "In progress",
+      name: "In Progress",
       taskIds: ["task-1", "task-2"],
     },
     "column-3": {
@@ -64,8 +64,10 @@ export default function TasksPage() {
 
   const dragStartHandler = (dragStartData: DragStart) => {
     const { draggableId, source } = dragStartData;
+
     const taskName = dndData.tasks[draggableId].taskName;
     const sourceColumnName = dndData.columns[source.droppableId].name;
+
     toast.info(
       `Dragging task '${taskName}' from column '${sourceColumnName}'.`,
     );
@@ -75,15 +77,23 @@ export default function TasksPage() {
 
   const dragEndHandler = (dropResultData: DropResult) => {
     const { draggableId, source, destination } = dropResultData;
-    if (destination === null) {
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index == source.index)
+    ) {
       toast.error("Drag cancelled.");
       return;
     }
+
     const taskName = dndData.tasks[draggableId].taskName;
     const sourceColumnName = dndData.columns[source.droppableId].name;
     const destinationColumnName = dndData.columns[destination.droppableId].name;
+
     toast.success(
-      `Dropped task '${taskName}' at '${destinationColumnName}' from '${sourceColumnName}'.`,
+      destination.droppableId === source.droppableId
+        ? `Dropped task '${taskName}' at position ${destination.index + 1} from position ${source.index + 1}.`
+        : `Dropped task '${taskName}' at '${destinationColumnName}' from '${sourceColumnName}'.`,
     );
   };
 
@@ -95,35 +105,21 @@ export default function TasksPage() {
         onDragUpdate={dragUpdateHandler}
         onDragEnd={dragEndHandler}
       >
-        <Droppable
-          droppableId="all-columns"
-          direction="horizontal"
-          type="column"
-        >
-          {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="m-8 flex justify-between rounded-sm border border-sky-200"
-            >
-              {dndData.columnIdsOrder.map((columnId, index) => {
-                const columnData = dndData.columns[columnId];
-                const allTasksInColumn = columnData.taskIds.map(
-                  (taskId) => dndData.tasks[taskId],
-                );
-                return (
-                  <TaskColumn
-                    key={columnId}
-                    columnData={columnData}
-                    allTasksInColumn={allTasksInColumn}
-                    index={index}
-                  />
-                );
-              })}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
+        <div className="m-8 flex justify-between rounded-sm border border-sky-200">
+          {dndData.columnIdsOrder.map((columnId) => {
+            const columnData = dndData.columns[columnId];
+            const allTasksInColumn = columnData.taskIds.map(
+              (taskId) => dndData.tasks[taskId],
+            );
+            return (
+              <TaskColumn
+                key={columnId}
+                columnData={columnData}
+                allTasksInColumn={allTasksInColumn}
+              />
+            );
+          })}
+        </div>
       </DragDropContext>
     </div>
   );
@@ -132,44 +128,28 @@ export default function TasksPage() {
 function TaskColumn({
   columnData,
   allTasksInColumn,
-  index,
 }: {
   columnData: TasksColumnType;
   allTasksInColumn: TaskType[];
-  index: number;
 }) {
   return (
-    <Draggable draggableId={columnData.id} index={index}>
-      {(provided) => (
-        <div
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4"
-        >
-          <h3 className="mb-2 font-semibold" {...provided.dragHandleProps}>
-            {columnData.name}
-          </h3>
-          <Droppable
-            droppableId={columnData.id}
-            direction="vertical"
-            type="task"
+    <div className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4">
+      <h3 className="mb-2 font-semibold">{columnData.name}</h3>
+      <Droppable droppableId={columnData.id} direction="vertical" type="task">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={`${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
           >
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className={`${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
-              >
-                {allTasksInColumn.map((taskData, index) => (
-                  <Task key={taskData.id} taskData={taskData} index={index} />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </div>
-      )}
-    </Draggable>
+            {allTasksInColumn.map((taskData, index) => (
+              <Task key={taskData.id} taskData={taskData} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 }
 
