@@ -70,9 +70,9 @@ export default function TasksPage() {
     const taskName = dndData.tasks[draggableId].taskName;
     const sourceColumnName = dndData.columns[source.droppableId].name;
 
-    toast.info(
-      `Dragging '${taskName}' task from column '${sourceColumnName}'.`,
-    );
+    toast.info("Drag start", {
+      description: `'${taskName}' task from column '${sourceColumnName}'.`,
+    });
   };
 
   const dragUpdateHandler = (_dragUpdateData: DragUpdate) => {};
@@ -113,9 +113,9 @@ export default function TasksPage() {
       };
 
       setDndData(updatedDndData);
-      toast.success(
-        `Dropped '${taskName}' task at position ${destination.index + 1} from position ${source.index + 1}.`,
-      );
+      toast.success("Drag end", {
+        description: `'${taskName}' task from position ${source.index + 1} to position ${destination.index + 1}.`,
+      });
     } else {
       const sourceColumnTaskIds = Array.from(sourceColumn.taskIds);
       const destinationColumnTaskIds = Array.from(destinationColumn.taskIds);
@@ -142,9 +142,9 @@ export default function TasksPage() {
       };
 
       setDndData(updatedDndData);
-      toast.success(
-        `Dropped '${taskName}' task at '${destinationColumn.name}' from '${sourceColumn.name}'.`,
-      );
+      toast.success("Drag end", {
+        description: `'${taskName}' task from '${sourceColumn.name}' to '${destinationColumn.name}'.`,
+      });
     }
   };
 
