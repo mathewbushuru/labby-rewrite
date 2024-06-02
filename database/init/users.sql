@@ -30,6 +30,3 @@ CREATE TABLE `users` (
 END$$
 
 DELIMITER ;
-
-
-

@@ -1,0 +1,7 @@
+SHOW DATABASES;
+
+USE labby;
+
+SHOW TABLES;
+
+SELECT * FROM users;

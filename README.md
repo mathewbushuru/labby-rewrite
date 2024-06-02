@@ -75,6 +75,10 @@ Backend will be exposed on port 3000
 
 TODO
 
+`labby@ubc.com`
+
+`password`
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
