@@ -6,12 +6,14 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 
-import authReducer from "@/store/features/auth-slice";
 import checklistsApi from "@/api";
+import authReducer from "@/store/features/auth-slice";
+import tasksReducer from "@/store/features/tasks-slice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    tasks: tasksReducer,
     [checklistsApi.reducerPath]: checklistsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

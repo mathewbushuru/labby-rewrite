@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { toast } from "sonner";
 import {
   DragDropContext,
@@ -9,90 +8,53 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
+import { useAppSelector, useAppDispatch } from "@/store/store";
+import { setAllTasksData } from "@/store/features/tasks-slice";
+
 import SideNavbar from "@/components/side-navbar";
 
-type TaskType = {
-  id: string;
-  taskName: string;
-};
-
-type TasksColumnType = {
-  id: string;
-  name: string;
-  taskIds: string[];
-};
-
-type DragDropDataType = {
-  tasks: Record<string, TaskType>;
-  columns: Record<string, TasksColumnType>;
-  columnIdsOrder: string[];
-};
-
-const initialDndData: DragDropDataType = {
-  tasks: {
-    "task-1": { id: "task-1", taskName: "Acme Ecommerce App" },
-    "task-2": { id: "task-2", taskName: "Checklists App" },
-    "task-3": { id: "task-3", taskName: "Flix App" },
-    "task-4": { id: "task-4", taskName: "Outfits App" },
-    "task-5": { id: "task-5", taskName: "Battleship Game" },
-  },
-  columns: {
-    "column-1": {
-      id: "column-1",
-      name: "Adopt Me",
-      taskIds: ["task-4"],
-    },
-    "column-2": {
-      id: "column-2",
-      name: "To Do",
-      taskIds: ["task-3"],
-    },
-    "column-3": {
-      id: "column-3",
-      name: "In Progress",
-      taskIds: ["task-1", "task-2"],
-    },
-    "column-4": {
-      id: "column-4",
-      name: "Completed",
-      taskIds: ["task-5"],
-    },
-  },
-  columnIdsOrder: ["column-1", "column-2", "column-3", "column-4"],
-};
+import {
+  type TaskType,
+  type TasksColumnType,
+  type AllTasksDataType,
+} from "@/types/tasks";
 
 export default function TasksPage() {
   return (
     <div className="flex h-screen items-start">
       <SideNavbar />
-      <div className="flex-1 mx-8 my-10 space-y-6">
+      <div className="mx-8 my-10 flex-1 space-y-6">
         <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
-
-        <div className="max-w-2xl relative">
-          <img
-            src="/SearchIcon.svg"
-            className="absolute top-2.5 left-2.5 h-5"
-          />
-          <input 
-            className="bg-primaryWhite h-10 pl-10 pr-4 w-full rounded-md outline-none"
-            placeholder="Search..."
-          />
-        </div>
-
+        <SearchTasks />
         <TasksBoard />
       </div>
     </div>
   );
 }
 
+function SearchTasks() {
+  return (
+    <form className="relative flex max-w-2xl gap-4">
+      <img src="/SearchIcon.svg" className="absolute left-2.5 top-2.5 h-5" />
+      <input
+        className="h-10 w-full rounded-md bg-primaryWhite pl-10 pr-4 outline-none"
+        placeholder="Search..."
+        type="search"
+      />
+    </form>
+  );
+}
+
 function TasksBoard() {
-  const [dndData, setDndData] = useState<DragDropDataType>(initialDndData);
+  const dispatch = useAppDispatch();
+
+  const allTasksData = useAppSelector((state) => state.tasks);
 
   const dragStartHandler = (dragStartData: DragStart) => {
     const { draggableId, source } = dragStartData;
 
-    const taskName = dndData.tasks[draggableId].taskName;
-    const sourceColumnName = dndData.columns[source.droppableId].name;
+    const taskName = allTasksData.tasks[draggableId].taskName;
+    const sourceColumnName = allTasksData.columns[source.droppableId].name;
 
     toast.info("Drag start", {
       description: `'${taskName}' task from column '${sourceColumnName}'.`,
@@ -112,10 +74,10 @@ function TasksBoard() {
       return;
     }
 
-    const taskName = dndData.tasks[taskId].taskName;
+    const taskName = allTasksData.tasks[taskId].taskName;
 
-    const sourceColumn = dndData.columns[source.droppableId];
-    const destinationColumn = dndData.columns[destination.droppableId];
+    const sourceColumn = allTasksData.columns[source.droppableId];
+    const destinationColumn = allTasksData.columns[destination.droppableId];
 
     if (sourceColumn === destinationColumn) {
       const thisColumnsNewTaskIds = Array.from(sourceColumn.taskIds);
@@ -128,15 +90,15 @@ function TasksBoard() {
         taskIds: thisColumnsNewTaskIds,
       };
 
-      const updatedDndData = {
-        ...dndData,
+      const updatedDndData: AllTasksDataType = {
+        ...allTasksData,
         columns: {
-          ...dndData.columns,
+          ...allTasksData.columns,
           [updatedColumnData.id]: updatedColumnData,
         },
       };
 
-      setDndData(updatedDndData);
+      dispatch(setAllTasksData(updatedDndData));
       toast.success("Drag end", {
         description: `'${taskName}' task from position ${source.index + 1} to position ${destination.index + 1}.`,
       });
@@ -156,16 +118,16 @@ function TasksBoard() {
         taskIds: destinationColumnTaskIds,
       };
 
-      const updatedDndData = {
-        ...dndData,
+      const updatedDndData: AllTasksDataType = {
+        ...allTasksData,
         columns: {
-          ...dndData.columns,
+          ...allTasksData.columns,
           [updatedSourceColumnData.id]: updatedSourceColumnData,
           [updatedDestinationColumnData.id]: updatedDestinationColumnData,
         },
       };
 
-      setDndData(updatedDndData);
+      dispatch(setAllTasksData(updatedDndData));
       toast.success("Drag end", {
         description: `'${taskName}' task from '${sourceColumn.name}' to '${destinationColumn.name}'.`,
       });
@@ -178,10 +140,10 @@ function TasksBoard() {
       onDragEnd={dragEndHandler}
     >
       <div className="flex flex-col rounded-sm border border-sky-200 sm:flex-row sm:justify-between">
-        {dndData.columnIdsOrder.map((columnId) => {
-          const columnData = dndData.columns[columnId];
+        {allTasksData.columnIdsOrder.map((columnId) => {
+          const columnData = allTasksData.columns[columnId];
           const allTasksInColumn = columnData.taskIds.map(
-            (taskId) => dndData.tasks[taskId],
+            (taskId) => allTasksData.tasks[taskId],
           );
           return (
             <TaskColumn
