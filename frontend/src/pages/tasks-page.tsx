@@ -60,7 +60,7 @@ const initialDndData: DragDropDataType = {
 };
 
 export default function TasksPage() {
-  const [dndData, _setDndData] = useState<DragDropDataType>(initialDndData);
+  const [dndData, setDndData] = useState<DragDropDataType>(initialDndData);
 
   const dragStartHandler = (dragStartData: DragStart) => {
     const { draggableId, source } = dragStartData;
@@ -69,14 +69,14 @@ export default function TasksPage() {
     const sourceColumnName = dndData.columns[source.droppableId].name;
 
     toast.info(
-      `Dragging task '${taskName}' from column '${sourceColumnName}'.`,
+      `Dragging '${taskName}' task from column '${sourceColumnName}'.`,
     );
   };
 
   const dragUpdateHandler = (_dragUpdateData: DragUpdate) => {};
 
   const dragEndHandler = (dropResultData: DropResult) => {
-    const { draggableId, source, destination } = dropResultData;
+    const { draggableId: taskId, source, destination } = dropResultData;
     if (
       !destination ||
       (destination.droppableId === source.droppableId &&
@@ -86,15 +86,64 @@ export default function TasksPage() {
       return;
     }
 
-    const taskName = dndData.tasks[draggableId].taskName;
-    const sourceColumnName = dndData.columns[source.droppableId].name;
-    const destinationColumnName = dndData.columns[destination.droppableId].name;
+    const taskName = dndData.tasks[taskId].taskName;
 
-    toast.success(
-      destination.droppableId === source.droppableId
-        ? `Dropped task '${taskName}' at position ${destination.index + 1} from position ${source.index + 1}.`
-        : `Dropped task '${taskName}' at '${destinationColumnName}' from '${sourceColumnName}'.`,
-    );
+    const sourceColumn = dndData.columns[source.droppableId];
+    const destinationColumn = dndData.columns[destination.droppableId];
+
+    if (sourceColumn === destinationColumn) {
+      const thisColumnsNewTaskIds = Array.from(sourceColumn.taskIds);
+
+      thisColumnsNewTaskIds.splice(source.index, 1);
+      thisColumnsNewTaskIds.splice(destination.index, 0, taskId);
+
+      const updatedColumnData = {
+        ...sourceColumn,
+        taskIds: thisColumnsNewTaskIds,
+      };
+
+      const updatedDndData = {
+        ...dndData,
+        columns: {
+          ...dndData.columns,
+          [updatedColumnData.id]: updatedColumnData,
+        },
+      };
+
+      setDndData(updatedDndData);
+      toast.success(
+        `Dropped '${taskName}' task at position ${destination.index + 1} from position ${source.index + 1}.`,
+      );
+    } else {
+      const sourceColumnTaskIds = Array.from(sourceColumn.taskIds);
+      const destinationColumnTaskIds = Array.from(destinationColumn.taskIds);
+
+      sourceColumnTaskIds.splice(source.index, 1);
+      destinationColumnTaskIds.splice(destination.index, 0, taskId);
+
+      const updatedSourceColumnData = {
+        ...sourceColumn,
+        taskIds: sourceColumnTaskIds,
+      };
+      const updatedDestinationColumnData = {
+        ...destinationColumn,
+        taskIds: destinationColumnTaskIds,
+      };
+
+      const updatedDndData = {
+        ...dndData,
+        columns: {
+          ...dndData.columns,
+          [updatedSourceColumnData.id]: updatedSourceColumnData,
+          [updatedDestinationColumnData.id]: updatedDestinationColumnData,
+        },
+      };
+
+      setDndData(updatedDndData);
+      toast.success(
+        `Dropped '${taskName}' task at '${destinationColumn.name}' from '${sourceColumn.name}'.`,
+      );
+    }
   };
 
   return (
