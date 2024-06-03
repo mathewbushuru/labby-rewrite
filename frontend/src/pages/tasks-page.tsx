@@ -9,7 +9,10 @@ import {
 } from "@hello-pangea/dnd";
 
 import { useAppSelector, useAppDispatch } from "@/store/store";
-import { setAllTasksData } from "@/store/features/tasks-slice";
+import {
+  setAllTasksData,
+  resetAllTasksData,
+} from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
 
@@ -18,6 +21,7 @@ import {
   type TasksColumnType,
   type AllTasksDataType,
 } from "@/types/tasks";
+import { PrimaryButton } from "@/components/ui/button";
 
 export default function TasksPage() {
   return (
@@ -25,7 +29,10 @@ export default function TasksPage() {
       <SideNavbar />
       <div className="mx-8 my-10 flex-1 space-y-6">
         <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
-        <SearchTasks />
+        <div className="flex items-center justify-between">
+          <SearchTasks />
+          <PrimaryButton>New Task</PrimaryButton>
+        </div>
         <TasksBoard />
       </div>
     </div>
@@ -33,13 +40,53 @@ export default function TasksPage() {
 }
 
 function SearchTasks() {
+  const dispatch = useAppDispatch();
+  const allTasksData = useAppSelector((state) => state.tasks);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value.toLowerCase();
+
+    if (!searchTerm || searchTerm.length === 0) {
+      dispatch(resetAllTasksData());
+      return;
+    }
+
+    const filteredTasks: Record<string, TaskType> = {};
+    let currTask;
+    for (let taskId in allTasksData.tasks) {
+      currTask = allTasksData.tasks[taskId];
+      if (currTask.taskName.toLowerCase().includes(searchTerm)) {
+        filteredTasks[taskId] = currTask;
+      }
+    }
+
+    const filteredColumns = { ...allTasksData.columns };
+    for (let columnId in filteredColumns) {
+      filteredColumns[columnId] = {
+        ...filteredColumns[columnId],
+        taskIds: filteredColumns[columnId].taskIds.filter((taskId) =>
+          filteredTasks.hasOwnProperty(taskId),
+        ),
+      };
+    }
+
+    const filteredAllTasksData = {
+      ...allTasksData,
+      tasks: filteredTasks,
+      columns: filteredColumns,
+    };
+
+    dispatch(setAllTasksData(filteredAllTasksData));
+  };
+
   return (
-    <form className="relative flex max-w-2xl gap-4">
+    <form className="relative flex max-w-2xl flex-1 gap-4">
       <img src="/SearchIcon.svg" className="absolute left-2.5 top-2.5 h-5" />
       <input
         className="h-10 w-full rounded-md bg-primaryWhite pl-10 pr-4 outline-none"
         placeholder="Search..."
         type="search"
+        onChange={handleSearch}
       />
     </form>
   );

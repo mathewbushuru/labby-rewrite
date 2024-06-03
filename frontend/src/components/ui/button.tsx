@@ -5,7 +5,7 @@ interface buttonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export function PrimaryButton({ disabled, children, ...props }: buttonProps) {
   return (
     <button
-      className={`rounded-md bg-primary px-8 py-1 text-white hover:bg-opacity-85 ${disabled ? "pointer-events-none cursor-not-allowed opacity-50" : ""}`}
+      className={`rounded-md bg-primary px-8 py-1.5 text-white hover:bg-opacity-85 ${disabled ? "pointer-events-none cursor-not-allowed opacity-50" : ""}`}
       {...props}
     >
       {children}

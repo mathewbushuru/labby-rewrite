@@ -37,15 +37,21 @@ const initialAllTasksState: AllTasksDataType = {
 
 const tasksSlice = createSlice({
   name: "tasks",
-  initialState: initialAllTasksState,
+  initialState: {
+    ...initialAllTasksState,
+    originalTasks: initialAllTasksState,
+  },
   reducers: {
-    setAllTasksData: (_state, action: PayloadAction<AllTasksDataType>) => {
-      return action.payload;
+    setAllTasksData: (state, action: PayloadAction<AllTasksDataType>) => {
+      return { ...state, ...action.payload };
+    },
+    resetAllTasksData: (state) => {
+      return { ...state.originalTasks, originalTasks: state.originalTasks };
     },
   },
 });
 
-export const { setAllTasksData } = tasksSlice.actions;
+export const { setAllTasksData, resetAllTasksData } = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;
