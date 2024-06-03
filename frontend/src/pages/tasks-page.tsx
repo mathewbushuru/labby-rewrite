@@ -16,13 +16,14 @@ import {
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
+import { PrimaryButton } from "@/components/ui/button";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 import {
   type TaskType,
   type TasksColumnType,
   type AllTasksDataType,
 } from "@/types/tasks";
-import { PrimaryButton } from "@/components/ui/button";
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
@@ -40,13 +41,21 @@ export default function TasksPage() {
           <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
           <img
             src="/Hamburger.svg"
-            className="h-6 w-6"
+            className="h-6 w-6 sm:hidden"
             onClick={() => setShowMobileSideNavbar((curr) => !curr)}
           />
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchTasks />
-          <PrimaryButton>New Task</PrimaryButton>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <PrimaryButton>New Task</PrimaryButton>
+            </DialogTrigger>
+            <DialogContent>
+            <h3 className="text-xl font-bold tracking-wide">Add new task</h3>
+            </DialogContent>
+          </Dialog>
         </div>
         <TasksBoard />
       </div>

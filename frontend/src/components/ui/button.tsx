@@ -1,17 +1,20 @@
+import * as React from "react";
+
 interface buttonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-export function PrimaryButton({ disabled, children, ...props }: buttonProps) {
-  return (
+export const PrimaryButton = React.forwardRef<HTMLButtonElement, buttonProps>(
+  ({ disabled, children, ...props }, ref) => (
     <button
-      className={`rounded-md bg-primary px-8 py-1.5 text-white hover:bg-opacity-85 ${disabled ? "pointer-events-none cursor-not-allowed opacity-50" : ""}`}
+      className={`rounded-md bg-primary px-8 py-1.5 text-white hover:bg-opacity-85 outline-none ${disabled ? "pointer-events-none cursor-not-allowed opacity-50" : ""}`}
+      ref={ref}
       {...props}
     >
       {children}
     </button>
-  );
-}
+  ),
+);
 
 export function PrimaryButtonLink({ children, ...props }: buttonProps) {
   return (
