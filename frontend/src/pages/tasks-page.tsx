@@ -16,14 +16,28 @@ import {
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
-import { PrimaryButton } from "@/components/ui/button";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { PrimaryButton, OutlineButton } from "@/components/ui/button";
+import { PrimaryInput } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 import {
   type TaskType,
   type TasksColumnType,
   type AllTasksDataType,
 } from "@/types/tasks";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
@@ -47,15 +61,7 @@ export default function TasksPage() {
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchTasks />
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <PrimaryButton>New Task</PrimaryButton>
-            </DialogTrigger>
-            <DialogContent>
-            <h3 className="text-xl font-bold tracking-wide">Add new task</h3>
-            </DialogContent>
-          </Dialog>
+          <NewTask />
         </div>
         <TasksBoard />
       </div>
@@ -113,6 +119,61 @@ function SearchTasks() {
         onChange={handleSearch}
       />
     </form>
+  );
+}
+
+function NewTask() {
+  const [taskName, setTaskName] = useState("");
+  const [taskCategory, setTaskCategory] = useState("adopt-me");
+
+  const handleAddNewTask = (
+    _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (!taskName || taskName.length === 0) {
+      toast.error("Add task error", {
+        description: "Task name is required.",
+      });
+      return;
+    }
+
+    console.log(taskName);
+    console.log(taskCategory);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <PrimaryButton>New Task</PrimaryButton>
+      </DialogTrigger>
+      <DialogContent>
+        <h3 className="text-xl font-bold tracking-wide">Add new task</h3>
+        <PrimaryInput
+          placeholder="Task name..."
+          value={taskName}
+          onChange={(e) => setTaskName(e.target.value)}
+          autoFocus
+        />
+        <Select value={taskCategory} onValueChange={(newValue) => setTaskCategory(newValue)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select task category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="adopt-me">Adopt Me</SelectItem>
+            <SelectItem value="to-do">To Do</SelectItem>
+            <SelectItem value="in-progress">In Progress</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
+          </SelectContent>
+        </Select>
+        <DialogFooter>
+          <DialogClose asChild>
+            <OutlineButton>Cancel</OutlineButton>
+          </DialogClose>
+          <DialogClose asChild>
+            <PrimaryButton onClick={handleAddNewTask}>Add</PrimaryButton>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -237,14 +298,14 @@ function TaskColumn({
   allTasksInColumn: TaskType[];
 }) {
   return (
-    <div className="flex-1 rounded-md border border-sky-100 bg-sky-50 p-4">
+    <div className="flex-1 rounded-md bg-primaryWhite p-4">
       <h3 className="mb-2 font-semibold">{columnData.name}</h3>
       <Droppable droppableId={columnData.id} direction="vertical" type="task">
         {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className={`min-h-10 sm:min-h-20 ${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
+            className={`min-h-10 rounded-md sm:min-h-20 ${snapshot.isDraggingOver ? "bg-primaryLight opacity-20" : "bg-inherit"}`}
           >
             {allTasksInColumn.map((taskData, index) => (
               <Task key={taskData.id} taskData={taskData} index={index} />

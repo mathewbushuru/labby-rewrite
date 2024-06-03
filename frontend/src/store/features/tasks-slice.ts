@@ -11,28 +11,28 @@ const initialAllTasksState: AllTasksDataType = {
     "task-5": { id: "task-5", taskName: "Battleship Game" },
   },
   columns: {
-    "column-1": {
-      id: "column-1",
+    "adopt-me": {
+      id: "adopt-me",
       name: "Adopt Me",
       taskIds: ["task-4"],
     },
-    "column-2": {
-      id: "column-2",
+    "to-do": {
+      id: "to-do",
       name: "To Do",
       taskIds: ["task-3"],
     },
-    "column-3": {
-      id: "column-3",
+    "in-progress": {
+      id: "in-progress",
       name: "In Progress",
       taskIds: ["task-1", "task-2"],
     },
-    "column-4": {
-      id: "column-4",
+    completed: {
+      id: "completed",
       name: "Completed",
       taskIds: ["task-5"],
     },
   },
-  columnIdsOrder: ["column-1", "column-2", "column-3", "column-4"],
+  columnIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
 };
 
 const tasksSlice = createSlice({
