@@ -13,6 +13,7 @@ import { useAppSelector, useAppDispatch } from "@/store/store";
 import {
   setAllTasksData,
   resetAllTasksData,
+  addNewTask,
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
@@ -123,8 +124,10 @@ function SearchTasks() {
 }
 
 function NewTask() {
+  const dispatch = useAppDispatch();
+
   const [taskName, setTaskName] = useState("");
-  const [taskCategory, setTaskCategory] = useState("adopt-me");
+  const [taskCategoryId, setTaskCategoryId] = useState("adopt-me");
 
   const handleAddNewTask = (
     _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -136,8 +139,10 @@ function NewTask() {
       return;
     }
 
-    console.log(taskName);
-    console.log(taskCategory);
+    dispatch(addNewTask({ taskName, taskCategoryId }));
+    toast.success(`'${taskName}' task added successfully.`)
+    setTaskName("");
+    setTaskCategoryId("adopt-me");
   };
 
   return (
@@ -153,7 +158,10 @@ function NewTask() {
           onChange={(e) => setTaskName(e.target.value)}
           autoFocus
         />
-        <Select value={taskCategory} onValueChange={(newValue) => setTaskCategory(newValue)}>
+        <Select
+          value={taskCategoryId}
+          onValueChange={(newValue) => setTaskCategoryId(newValue)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select task category" />
           </SelectTrigger>

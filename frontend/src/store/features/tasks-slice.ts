@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { type AllTasksDataType } from "@/types/tasks";
+import { type AllTasksDataType, type TaskType } from "@/types/tasks";
 
 const initialAllTasksState: AllTasksDataType = {
   tasks: {
@@ -39,19 +39,33 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState: {
     ...initialAllTasksState,
-    originalTasks: initialAllTasksState,
+    resetTasksData: initialAllTasksState,
   },
   reducers: {
     setAllTasksData: (state, action: PayloadAction<AllTasksDataType>) => {
       return { ...state, ...action.payload };
     },
     resetAllTasksData: (state) => {
-      return { ...state.originalTasks, originalTasks: state.originalTasks };
+      return { ...state.resetTasksData, resetTasksData: state.resetTasksData };
+    },
+    addNewTask: (
+      state,
+      action: PayloadAction<{ taskName: string; taskCategoryId: string }>,
+    ) => {
+      const newId = crypto.randomUUID();
+      const newTaskData: TaskType = {
+        id: newId,
+        taskName: action.payload.taskName,
+      };
+      state.tasks[newId] = newTaskData;
+      state.columns[action.payload.taskCategoryId].taskIds.push(newId);
+      state.resetTasksData.tasks[newId] = newTaskData;
+      state.resetTasksData.columns[action.payload.taskCategoryId].taskIds.push(newId);
     },
   },
 });
 
-export const { setAllTasksData, resetAllTasksData } = tasksSlice.actions;
+export const { setAllTasksData, resetAllTasksData, addNewTask } = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;
