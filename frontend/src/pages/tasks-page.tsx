@@ -14,6 +14,7 @@ import {
   setAllTasksData,
   resetAllTasksData,
   addNewTask,
+  updateTaskName,
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
@@ -327,28 +328,58 @@ function TaskColumn({
 }
 
 function Task({ taskData, index }: { taskData: TaskType; index: number }) {
+  const dispatch = useAppDispatch();
+  const [taskName, setTaskName] = useState(taskData.taskName);
   const taskColourId = taskData.taskColourId;
+  const handleUpdateTaskData = () => {
+    dispatch(updateTaskName({ taskId: taskData.id, taskName }));
+  };
   return (
     <Draggable draggableId={taskData.id} index={index}>
       {(provided) => (
-        <div
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          className="mb-2 flex overflow-hidden rounded-md bg-white"
-        >
-          <div
-            className={`w-2 ${taskColourId === 1 ? "bg-task1" : taskColourId === 2 ? "bg-task2" : taskColourId === 3 ? "bg-task3" : taskColourId === 4 ? "bg-task4" : "bg-task5"} `}
-          >
-            &nbsp;
-          </div>
-          <div className="space-y-1 p-4">
-            <div className="text-sm font-semibold text-darkGray">
-              {taskData.id.toUpperCase()}
+        <Dialog>
+          <DialogTrigger asChild>
+            <div
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              className="mb-2 flex overflow-hidden rounded-md bg-white"
+            >
+              <div
+                className={`w-2 ${taskColourId === 1 ? "bg-task1" : taskColourId === 2 ? "bg-task2" : taskColourId === 3 ? "bg-task3" : taskColourId === 4 ? "bg-task4" : "bg-task5"} `}
+              >
+                &nbsp;
+              </div>
+              <div className="space-y-1 p-4">
+                <div className="text-sm font-semibold text-darkGray">
+                  {taskData.id.toUpperCase()}
+                </div>
+                <div className="text-sm">{taskData.taskName}</div>
+              </div>
             </div>
-            <div className="text-sm">{taskData.taskName}</div>
-          </div>
-        </div>
+          </DialogTrigger>
+          <DialogContent>
+            <h3 className="text-xl font-bold tracking-wide">
+              {taskData.id.toUpperCase()}
+            </h3>
+            <PrimaryInput
+              placeholder="Task name..."
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              autoFocus
+            />
+            <DialogFooter>
+              <DialogClose asChild>
+                <OutlineButton>Cancel</OutlineButton>
+              </DialogClose>
+              <DialogClose asChild>
+                <PrimaryButton onClick={handleUpdateTaskData}>
+                  Update
+                </PrimaryButton>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
     </Draggable>
   );

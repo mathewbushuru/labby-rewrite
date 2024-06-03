@@ -85,11 +85,23 @@ const tasksSlice = createSlice({
         newId,
       );
     },
+    updateTaskName: (
+      state,
+      action: PayloadAction<{ taskId: string; taskName: string }>,
+    ) => {
+      state.tasks[action.payload.taskId].taskName = action.payload.taskName;
+      state.resetTasksData.tasks[action.payload.taskId].taskName =
+        action.payload.taskName;
+    },
   },
 });
 
-export const { setAllTasksData, resetAllTasksData, addNewTask } =
-  tasksSlice.actions;
+export const {
+  setAllTasksData,
+  resetAllTasksData,
+  addNewTask,
+  updateTaskName,
+} = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;
