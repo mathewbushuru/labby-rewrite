@@ -21,9 +21,9 @@ export default function LoginPage() {
   const { state } = useLocation();
 
   const [email, setEmail] = useState(
-    state && state.signupEmail ? state.signupEmail : "",
+    state && state.signupEmail ? state.signupEmail : "matt@test.com",
   );
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("Tester123");
 
   const [loginTrigger, { isLoading }] = useLoginMutation();
 

@@ -1,6 +1,7 @@
 export type TaskType = {
     id: string;
     taskName: string;
+    taskColourId?: number
   };
   
   export type TasksColumnType = {

@@ -140,7 +140,7 @@ function NewTask() {
     }
 
     dispatch(addNewTask({ taskName, taskCategoryId }));
-    toast.success(`'${taskName}' task added successfully.`)
+    toast.success(`'${taskName}' task added successfully.`);
     setTaskName("");
     setTaskCategoryId("adopt-me");
   };
@@ -327,6 +327,7 @@ function TaskColumn({
 }
 
 function Task({ taskData, index }: { taskData: TaskType; index: number }) {
+  const taskColourId = taskData.taskColourId;
   return (
     <Draggable draggableId={taskData.id} index={index}>
       {(provided) => (
@@ -334,9 +335,19 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className="mb-2 rounded-md bg-white p-2"
+          className="mb-2 flex overflow-hidden rounded-md bg-white"
         >
-          {taskData.taskName}
+          <div
+            className={`w-2 ${taskColourId === 1 ? "bg-task1" : taskColourId === 2 ? "bg-task2" : taskColourId === 3 ? "bg-task3" : taskColourId === 4 ? "bg-task4" : "bg-task5"} `}
+          >
+            &nbsp;
+          </div>
+          <div className="space-y-1 p-4">
+            <div className="text-sm font-semibold text-darkGray">
+              {taskData.id.toUpperCase()}
+            </div>
+            <div className="text-sm">{taskData.taskName}</div>
+          </div>
         </div>
       )}
     </Draggable>
