@@ -7,26 +7,31 @@ const initialAllTasksState: AllTasksDataType = {
     "task-1": {
       id: "task-1",
       taskName: "Acme Ecommerce App",
+      taskDescription: "",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-2": {
       id: "task-2",
       taskName: "Checklists App",
+      taskDescription: "",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-3": {
       id: "task-3",
       taskName: "Flix App",
+      taskDescription: "",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-4": {
       id: "task-4",
       taskName: "Outfits App",
+      taskDescription: "",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-5": {
       id: "task-5",
       taskName: "Battleship Game",
+      taskDescription: "",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
   },
@@ -70,12 +75,17 @@ const tasksSlice = createSlice({
     },
     addNewTask: (
       state,
-      action: PayloadAction<{ taskName: string; taskCategoryId: string }>,
+      action: PayloadAction<{
+        taskName: string;
+        taskDescription: string;
+        taskCategoryId: string;
+      }>,
     ) => {
       const newId = `task-${Math.floor(Math.random() * 1000)}`;
       const newTaskData: TaskType = {
         id: newId,
         taskName: action.payload.taskName,
+        taskDescription: action.payload.taskDescription,
         taskColourId: Math.floor(Math.random() * 5 + 1),
       };
       state.tasks[newId] = newTaskData;
@@ -93,6 +103,15 @@ const tasksSlice = createSlice({
       state.resetTasksData.tasks[action.payload.taskId].taskName =
         action.payload.taskName;
     },
+    updateTaskDescription: (
+      state,
+      action: PayloadAction<{ taskId: string; taskDescription: string }>,
+    ) => {
+      state.tasks[action.payload.taskId].taskDescription =
+        action.payload.taskDescription;
+      state.resetTasksData.tasks[action.payload.taskId].taskDescription =
+        action.payload.taskDescription;
+    },
   },
 });
 
@@ -101,6 +120,7 @@ export const {
   resetAllTasksData,
   addNewTask,
   updateTaskName,
+  updateTaskDescription,
 } = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;

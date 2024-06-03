@@ -15,11 +15,12 @@ import {
   resetAllTasksData,
   addNewTask,
   updateTaskName,
+  updateTaskDescription,
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
 import { PrimaryButton, OutlineButton } from "@/components/ui/button";
-import { PrimaryInput } from "@/components/ui/input";
+import { PrimaryInput, TextArea } from "@/components/ui/input";
 import {
   Dialog,
   DialogTrigger,
@@ -128,6 +129,7 @@ function NewTask() {
   const dispatch = useAppDispatch();
 
   const [taskName, setTaskName] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
   const [taskCategoryId, setTaskCategoryId] = useState("adopt-me");
 
   const handleAddNewTask = (
@@ -140,9 +142,10 @@ function NewTask() {
       return;
     }
 
-    dispatch(addNewTask({ taskName, taskCategoryId }));
+    dispatch(addNewTask({ taskName, taskCategoryId, taskDescription }));
     toast.success(`'${taskName}' task added successfully.`);
     setTaskName("");
+    setTaskDescription("");
     setTaskCategoryId("adopt-me");
   };
 
@@ -158,6 +161,11 @@ function NewTask() {
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
           autoFocus
+        />
+        <TextArea
+          placeholder="Task description"
+          value={taskDescription}
+          onChange={(e) => setTaskDescription(e.target.value)}
         />
         <Select
           value={taskCategoryId}
@@ -330,9 +338,14 @@ function TaskColumn({
 function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   const dispatch = useAppDispatch();
   const [taskName, setTaskName] = useState(taskData.taskName);
+  const [taskDescription, setTaskDescription] = useState(
+    taskData.taskDescription,
+  );
   const taskColourId = taskData.taskColourId;
   const handleUpdateTaskData = () => {
     dispatch(updateTaskName({ taskId: taskData.id, taskName }));
+    dispatch(updateTaskDescription({ taskId: taskData.id, taskDescription }));
+    toast.success(`'${taskName}' task updated successfully.`);
   };
   return (
     <Draggable draggableId={taskData.id} index={index}>
@@ -367,6 +380,11 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
               autoFocus
+            />
+            <TextArea
+              placeholder="Task description"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
             />
             <DialogFooter>
               <DialogClose asChild>
