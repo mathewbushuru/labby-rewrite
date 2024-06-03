@@ -54,7 +54,7 @@ export default function SignupPage() {
   return (
     <div className="flex h-screen p-8 sm:p-0">
       {/* Desktop left   */}
-      <form onSubmit={handleSignup} className="flex-1 space-y-7 sm:mt-32">
+      <form onSubmit={handleSignup} className="flex-1 space-y-7 sm:mt-32 2xl:mt-44">
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
         <p className="mx-auto max-w-sm text-center text-2xl font-semibold">

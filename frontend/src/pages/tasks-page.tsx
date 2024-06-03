@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { toast } from "sonner";
 import {
   DragDropContext,
@@ -24,12 +25,26 @@ import {
 import { PrimaryButton } from "@/components/ui/button";
 
 export default function TasksPage() {
+  const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
   return (
     <div className="flex h-screen items-start">
-      <SideNavbar />
-      <div className="mx-8 my-10 flex-1 space-y-6">
-        <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
+      <div
+        className={`${showMobileSideNavbar ? "inline-block" : "hidden"} h-full sm:inline-block`}
+      >
+        <SideNavbar />
+      </div>
+      <div
+        className={`h-full flex-1 space-y-6 overflow-y-auto py-9 sm:py-10 ${showMobileSideNavbar ? "px-4" : "px-8"}`}
+      >
         <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
+          <img
+            src="/Hamburger.svg"
+            className="h-6 w-6"
+            onClick={() => setShowMobileSideNavbar((curr) => !curr)}
+          />
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchTasks />
           <PrimaryButton>New Task</PrimaryButton>
         </div>
@@ -186,7 +201,7 @@ function TasksBoard() {
       onDragUpdate={dragUpdateHandler}
       onDragEnd={dragEndHandler}
     >
-      <div className="flex flex-col rounded-sm border border-sky-200 sm:flex-row sm:justify-between">
+      <div className="flex flex-col  gap-4 rounded-sm sm:flex-row sm:justify-between">
         {allTasksData.columnIdsOrder.map((columnId) => {
           const columnData = allTasksData.columns[columnId];
           const allTasksInColumn = columnData.taskIds.map(
@@ -213,14 +228,14 @@ function TaskColumn({
   allTasksInColumn: TaskType[];
 }) {
   return (
-    <div className="m-4 flex-1 rounded-md border border-sky-100 bg-sky-50 p-4">
+    <div className="flex-1 rounded-md border border-sky-100 bg-sky-50 p-4">
       <h3 className="mb-2 font-semibold">{columnData.name}</h3>
       <Droppable droppableId={columnData.id} direction="vertical" type="task">
         {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className={`${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
+            className={`min-h-10 sm:min-h-20 ${snapshot.isDraggingOver ? "bg-emerald-50" : "bg-inherit"}`}
           >
             {allTasksInColumn.map((taskData, index) => (
               <Task key={taskData.id} taskData={taskData} index={index} />

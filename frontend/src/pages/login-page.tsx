@@ -63,7 +63,7 @@ export default function LoginPage() {
       <div className="background-image hidden flex-1 bg-primaryDark sm:inline-block" />
 
       {/* Desktop Right   */}
-      <form onSubmit={handleLogin} className="flex-1  space-y-5 sm:mt-36">
+      <form onSubmit={handleLogin} className="flex-1  space-y-5 sm:mt-36 2xl:mt-48">
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
         <p className="mx-auto max-w-sm text-center text-2xl font-semibold">
