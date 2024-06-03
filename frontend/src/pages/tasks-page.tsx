@@ -128,6 +128,8 @@ function SearchTasks() {
 function NewTask() {
   const dispatch = useAppDispatch();
 
+  const userId = useAppSelector((state) => state.auth.user?.user_id)!;
+
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskCategoryId, setTaskCategoryId] = useState("adopt-me");
@@ -142,7 +144,14 @@ function NewTask() {
       return;
     }
 
-    dispatch(addNewTask({ taskName, taskCategoryId, taskDescription }));
+    dispatch(
+      addNewTask({
+        taskName,
+        taskCategoryId,
+        taskDescription,
+        taskCreatorId: userId,
+      }),
+    );
     toast.success(`'${taskName}' task added successfully.`);
     setTaskName("");
     setTaskDescription("");

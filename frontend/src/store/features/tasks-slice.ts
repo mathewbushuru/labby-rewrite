@@ -8,30 +8,35 @@ const initialAllTasksState: AllTasksDataType = {
       id: "task-1",
       taskName: "Acme Ecommerce App",
       taskDescription: "",
+      taskCreatorId: 1,
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-2": {
       id: "task-2",
       taskName: "Checklists App",
       taskDescription: "",
+      taskCreatorId: 1,
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-3": {
       id: "task-3",
       taskName: "Flix App",
       taskDescription: "",
+      taskCreatorId: 1,
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-4": {
       id: "task-4",
       taskName: "Outfits App",
       taskDescription: "",
+      taskCreatorId: 1,
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-5": {
       id: "task-5",
       taskName: "Battleship Game",
       taskDescription: "",
+      taskCreatorId: 1,
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
   },
@@ -79,6 +84,7 @@ const tasksSlice = createSlice({
         taskName: string;
         taskDescription: string;
         taskCategoryId: string;
+        taskCreatorId: number;
       }>,
     ) => {
       const newId = `task-${Math.floor(Math.random() * 1000)}`;
@@ -86,6 +92,7 @@ const tasksSlice = createSlice({
         id: newId,
         taskName: action.payload.taskName,
         taskDescription: action.payload.taskDescription,
+        taskCreatorId: action.payload.taskCreatorId,
         taskColourId: Math.floor(Math.random() * 5 + 1),
       };
       state.tasks[newId] = newTaskData;
