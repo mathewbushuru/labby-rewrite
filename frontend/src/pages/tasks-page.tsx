@@ -14,8 +14,7 @@ import {
   setAllTasksData,
   resetAllTasksData,
   addNewTask,
-  updateTaskName,
-  updateTaskDescription,
+  updateTaskData,
 } from "@/store/features/tasks-slice";
 
 import SideNavbar from "@/components/side-navbar";
@@ -346,16 +345,28 @@ function TaskColumn({
 
 function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   const dispatch = useAppDispatch();
+
   const [taskName, setTaskName] = useState(taskData.taskName);
   const [taskDescription, setTaskDescription] = useState(
     taskData.taskDescription,
   );
-  const taskColourId = taskData.taskColourId;
+
   const handleUpdateTaskData = () => {
-    dispatch(updateTaskName({ taskId: taskData.id, taskName }));
-    dispatch(updateTaskDescription({ taskId: taskData.id, taskDescription }));
+    if(!taskName || taskName.length ===  0){
+      toast.error("Update task error", {
+        description: "Task name cannot be empty."
+      })
+      setTaskName(taskData.taskName);
+      return;
+    }
+    dispatch(
+      updateTaskData({ taskId: taskData.id, taskName, taskDescription }),
+    );
     toast.success(`'${taskName}' task updated successfully.`);
   };
+
+  const taskColourId = taskData.taskColourId;
+
   return (
     <Draggable draggableId={taskData.id} index={index}>
       {(provided) => (

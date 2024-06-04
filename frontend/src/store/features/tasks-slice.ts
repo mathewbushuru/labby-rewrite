@@ -102,20 +102,20 @@ const tasksSlice = createSlice({
         newId,
       );
     },
-    updateTaskName: (
+    updateTaskData: (
       state,
-      action: PayloadAction<{ taskId: string; taskName: string }>,
+      action: PayloadAction<{
+        taskId: string;
+        taskName: string;
+        taskDescription: string;
+      }>,
     ) => {
       state.tasks[action.payload.taskId].taskName = action.payload.taskName;
-      state.resetTasksData.tasks[action.payload.taskId].taskName =
-        action.payload.taskName;
-    },
-    updateTaskDescription: (
-      state,
-      action: PayloadAction<{ taskId: string; taskDescription: string }>,
-    ) => {
       state.tasks[action.payload.taskId].taskDescription =
         action.payload.taskDescription;
+
+      state.resetTasksData.tasks[action.payload.taskId].taskName =
+        action.payload.taskName;
       state.resetTasksData.tasks[action.payload.taskId].taskDescription =
         action.payload.taskDescription;
     },
@@ -126,8 +126,7 @@ export const {
   setAllTasksData,
   resetAllTasksData,
   addNewTask,
-  updateTaskName,
-  updateTaskDescription,
+  updateTaskData
 } = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;
