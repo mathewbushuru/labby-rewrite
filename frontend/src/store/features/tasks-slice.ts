@@ -8,35 +8,35 @@ const initialAllTasksState: AllTasksDataType = {
       id: "task-1",
       taskName: "Acme Ecommerce App",
       taskDescription: "",
-      taskCreatorId: 1,
+      taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-2": {
       id: "task-2",
       taskName: "Checklists App",
       taskDescription: "",
-      taskCreatorId: 1,
+      taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-3": {
       id: "task-3",
       taskName: "Flix App",
       taskDescription: "",
-      taskCreatorId: 1,
+      taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-4": {
       id: "task-4",
       taskName: "Outfits App",
       taskDescription: "",
-      taskCreatorId: 1,
+      taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
     "task-5": {
       id: "task-5",
       taskName: "Battleship Game",
       taskDescription: "",
-      taskCreatorId: 1,
+      taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
   },
@@ -84,7 +84,7 @@ const tasksSlice = createSlice({
         taskName: string;
         taskDescription: string;
         taskCategoryId: string;
-        taskCreatorId: number;
+        taskCreatorId: string;
       }>,
     ) => {
       const newId = `task-${Math.floor(Math.random() * 1000)}`;
@@ -126,7 +126,7 @@ export const {
   setAllTasksData,
   resetAllTasksData,
   addNewTask,
-  updateTaskData
+  updateTaskData,
 } = tasksSlice.actions;
 
 const tasksReducer = tasksSlice.reducer;

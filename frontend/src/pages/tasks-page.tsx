@@ -87,7 +87,10 @@ function SearchTasks() {
     let currTask;
     for (let taskId in allTasksData.tasks) {
       currTask = allTasksData.tasks[taskId];
-      if (currTask.taskName.toLowerCase().includes(searchTerm)) {
+      if (
+        currTask.taskName.toLowerCase().includes(searchTerm) ||
+        currTask.taskDescription.toLowerCase().includes(searchTerm)
+      ) {
         filteredTasks[taskId] = currTask;
       }
     }
@@ -352,10 +355,10 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   );
 
   const handleUpdateTaskData = () => {
-    if(!taskName || taskName.length ===  0){
+    if (!taskName || taskName.length === 0) {
       toast.error("Update task error", {
-        description: "Task name cannot be empty."
-      })
+        description: "Task name cannot be empty.",
+      });
       setTaskName(taskData.taskName);
       return;
     }

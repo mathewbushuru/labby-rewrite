@@ -1,6 +1,6 @@
 export type BackendUserType = {
   email: string;
-  user_id: number;
+  user_id: string;
 };
 
 export type LoginRequestType = {
