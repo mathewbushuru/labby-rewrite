@@ -40,7 +40,7 @@ const initialAllTasksState: AllTasksDataType = {
       taskColourId: Math.floor(Math.random() * 5 + 1),
     },
   },
-  columns: {
+  taskCategories: {
     "adopt-me": {
       id: "adopt-me",
       name: "Adopt Me",
@@ -62,7 +62,7 @@ const initialAllTasksState: AllTasksDataType = {
       taskIds: ["task-5"],
     },
   },
-  columnIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
+  taskCategoryIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
 };
 
 const tasksSlice = createSlice({
@@ -96,9 +96,9 @@ const tasksSlice = createSlice({
         taskColourId: Math.floor(Math.random() * 5 + 1),
       };
       state.tasks[newId] = newTaskData;
-      state.columns[action.payload.taskCategoryId].taskIds.push(newId);
+      state.taskCategories[action.payload.taskCategoryId].taskIds.push(newId);
       state.resetTasksData.tasks[newId] = newTaskData;
-      state.resetTasksData.columns[action.payload.taskCategoryId].taskIds.push(
+      state.resetTasksData.taskCategories[action.payload.taskCategoryId].taskIds.push(
         newId,
       );
     },

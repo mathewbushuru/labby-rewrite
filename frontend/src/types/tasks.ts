@@ -6,7 +6,7 @@ export type TaskType = {
   taskColourId?: number;
 };
 
-export type TasksColumnType = {
+export type TaskCategoryType = {
   id: string;
   name: string;
   taskIds: string[];
@@ -14,6 +14,6 @@ export type TasksColumnType = {
 
 export type AllTasksDataType = {
   tasks: Record<string, TaskType>;                  // `tasks` object keys expected to be taskIds
-  columns: Record<string, TasksColumnType>;         // `columns` object keys expected to be columnIds
-  columnIdsOrder: string[];
+  taskCategories: Record<string, TaskCategoryType>;         // `taskCategory` object keys expected to be taskCategoryIds
+  taskCategoryIdsOrder: string[];
 };

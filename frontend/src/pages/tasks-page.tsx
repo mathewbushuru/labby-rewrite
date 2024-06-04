@@ -37,7 +37,7 @@ import {
 
 import {
   type TaskType,
-  type TasksColumnType,
+  type TaskCategoryType,
   type AllTasksDataType,
 } from "@/types/tasks";
 
@@ -95,11 +95,11 @@ function SearchTasks() {
       }
     }
 
-    const filteredColumns = { ...allTasksData.columns };
-    for (let columnId in filteredColumns) {
-      filteredColumns[columnId] = {
-        ...filteredColumns[columnId],
-        taskIds: filteredColumns[columnId].taskIds.filter((taskId) =>
+    const filteredTaskCategories = { ...allTasksData.taskCategories };
+    for (let taskCategoryId in filteredTaskCategories) {
+      filteredTaskCategories[taskCategoryId] = {
+        ...filteredTaskCategories[taskCategoryId],
+        taskIds: filteredTaskCategories[taskCategoryId].taskIds.filter((taskId) =>
           filteredTasks.hasOwnProperty(taskId),
         ),
       };
@@ -108,7 +108,7 @@ function SearchTasks() {
     const filteredAllTasksData = {
       ...allTasksData,
       tasks: filteredTasks,
-      columns: filteredColumns,
+      columns: filteredTaskCategories,
     };
 
     dispatch(setAllTasksData(filteredAllTasksData));
@@ -214,7 +214,7 @@ function TasksBoard() {
     const { draggableId: taskId, source } = dragStartData;
 
     const taskName = allTasksData.tasks[taskId].taskName;
-    const sourceColumnName = allTasksData.columns[source.droppableId].name;
+    const sourceColumnName = allTasksData.taskCategories[source.droppableId].name;
 
     toast.info("Drag start", {
       description: `'${taskName}' task from column '${sourceColumnName}'.`,
@@ -236,8 +236,8 @@ function TasksBoard() {
 
     const taskName = allTasksData.tasks[taskId].taskName;
 
-    const sourceColumn = allTasksData.columns[source.droppableId];
-    const destinationColumn = allTasksData.columns[destination.droppableId];
+    const sourceColumn = allTasksData.taskCategories[source.droppableId];
+    const destinationColumn = allTasksData.taskCategories[destination.droppableId];
 
     if (sourceColumn === destinationColumn) {
       const thisColumnsNewTaskIds = Array.from(sourceColumn.taskIds);
@@ -252,8 +252,8 @@ function TasksBoard() {
 
       const updatedDndData: AllTasksDataType = {
         ...allTasksData,
-        columns: {
-          ...allTasksData.columns,
+        taskCategories: {
+          ...allTasksData.taskCategories,
           [updatedColumnData.id]: updatedColumnData,
         },
       };
@@ -280,8 +280,8 @@ function TasksBoard() {
 
       const updatedDndData: AllTasksDataType = {
         ...allTasksData,
-        columns: {
-          ...allTasksData.columns,
+        taskCategories: {
+          ...allTasksData.taskCategories,
           [updatedSourceColumnData.id]: updatedSourceColumnData,
           [updatedDestinationColumnData.id]: updatedDestinationColumnData,
         },
@@ -300,14 +300,14 @@ function TasksBoard() {
       onDragEnd={dragEndHandler}
     >
       <div className="flex flex-col  gap-4 rounded-sm sm:flex-row sm:justify-between">
-        {allTasksData.columnIdsOrder.map((columnId) => {
-          const columnData = allTasksData.columns[columnId];
+        {allTasksData.taskCategoryIdsOrder.map((taskCategoryId) => {
+          const columnData = allTasksData.taskCategories[taskCategoryId];
           const allTasksInColumn = columnData.taskIds.map(
             (taskId) => allTasksData.tasks[taskId],
           );
           return (
             <TaskColumn
-              key={columnId}
+              key={taskCategoryId}
               columnData={columnData}
               allTasksInColumn={allTasksInColumn}
             />
@@ -322,7 +322,7 @@ function TaskColumn({
   columnData,
   allTasksInColumn,
 }: {
-  columnData: TasksColumnType;
+  columnData: TaskCategoryType;
   allTasksInColumn: TaskType[];
 }) {
   return (
