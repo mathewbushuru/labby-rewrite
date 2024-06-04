@@ -1,7 +1,3 @@
-/**
- * -> /test/*
- */
-
 import { Router } from "express";
 
 const router = Router();

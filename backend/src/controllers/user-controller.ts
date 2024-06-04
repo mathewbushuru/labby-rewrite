@@ -22,7 +22,10 @@ export default class UserController {
    * Public methods
    */
   async signupUser(req: Request, res: Response) {
-    const signupRequestData = req.body as Omit<NewUserType, "hashed_password"> & {
+    const signupRequestData = req.body as Omit<
+      NewUserType,
+      "hashed_password"
+    > & {
       password: string;
     };
 
@@ -60,7 +63,7 @@ export default class UserController {
 
       const { hashed_password, ...usedDataWithoutPassword } = newUserData;
 
-      console.log(`[${signupDatabaseData.email}]: Sign up successful`)
+      console.log(`[${signupDatabaseData.email}]: Sign up successful`);
 
       return res.status(201).json(usedDataWithoutPassword);
     } catch (error: any) {
@@ -143,11 +146,6 @@ export default class UserController {
   /**
    * Private methods
    */
-  private validateEmail(email: string) {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    return emailRegex.test(email);
-  }
-
   private async hashPassword(plainPassword: string) {
     const salt = await bcrypt.genSalt(this.PASSWORD_SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(plainPassword, salt);
@@ -163,5 +161,10 @@ export default class UserController {
       hashedPassword
     );
     return matchedResult;
+  }
+
+  private validateEmail(email: string) {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
   }
 }

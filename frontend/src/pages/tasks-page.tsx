@@ -2,8 +2,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   type DragStart,
   type DragUpdate,
   type DropResult,
@@ -26,6 +26,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -40,7 +41,6 @@ import {
   type TasksColumnType,
   type AllTasksDataType,
 } from "@/types/tasks";
-import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
@@ -209,9 +209,9 @@ function TasksBoard() {
   const allTasksData = useAppSelector((state) => state.tasks);
 
   const dragStartHandler = (dragStartData: DragStart) => {
-    const { draggableId, source } = dragStartData;
+    const { draggableId: taskId, source } = dragStartData;
 
-    const taskName = allTasksData.tasks[draggableId].taskName;
+    const taskName = allTasksData.tasks[taskId].taskName;
     const sourceColumnName = allTasksData.columns[source.droppableId].name;
 
     toast.info("Drag start", {
