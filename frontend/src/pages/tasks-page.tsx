@@ -99,8 +99,8 @@ function SearchTasks() {
     for (let taskCategoryId in filteredTaskCategories) {
       filteredTaskCategories[taskCategoryId] = {
         ...filteredTaskCategories[taskCategoryId],
-        taskIds: filteredTaskCategories[taskCategoryId].taskIds.filter((taskId) =>
-          filteredTasks.hasOwnProperty(taskId),
+        taskIds: filteredTaskCategories[taskCategoryId].taskIds.filter(
+          (taskId) => filteredTasks.hasOwnProperty(taskId),
         ),
       };
     }
@@ -214,7 +214,8 @@ function TasksBoard() {
     const { draggableId: taskId, source } = dragStartData;
 
     const taskName = allTasksData.tasks[taskId].taskName;
-    const sourceColumnName = allTasksData.taskCategories[source.droppableId].name;
+    const sourceColumnName =
+      allTasksData.taskCategories[source.droppableId].name;
 
     toast.info("Drag start", {
       description: `'${taskName}' task from column '${sourceColumnName}'.`,
@@ -237,7 +238,8 @@ function TasksBoard() {
     const taskName = allTasksData.tasks[taskId].taskName;
 
     const sourceColumn = allTasksData.taskCategories[source.droppableId];
-    const destinationColumn = allTasksData.taskCategories[destination.droppableId];
+    const destinationColumn =
+      allTasksData.taskCategories[destination.droppableId];
 
     if (sourceColumn === destinationColumn) {
       const thisColumnsNewTaskIds = Array.from(sourceColumn.taskIds);

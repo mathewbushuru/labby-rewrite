@@ -16,6 +16,6 @@ export type LoginResponseType = BackendUserType & {
 export type SignupRequestType = {
   email: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
 };

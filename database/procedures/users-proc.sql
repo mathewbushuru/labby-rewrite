@@ -9,16 +9,22 @@ DELIMITER $$
 -- addUser
 CREATE PROCEDURE `addUser` (
     IN `_email` VARCHAR(255),
-    IN `_hashed_password` VARCHAR(255)
+    IN `_hashed_password` VARCHAR(255),
+    IN `_first_name` VARCHAR(255),
+    IN `_last_name` VARCHAR(255)
 )
 BEGIN
 INSERT INTO `users` (
     `email`,
-    `hashed_password`
+    `hashed_password`,
+    `first_name`,
+    `last_name`
 )
 VALUES (
     `_email`,
-    `_hashed_password`
+    `_hashed_password`,
+    `_first_name`,
+    `_last_name`
 );
 END $$
 

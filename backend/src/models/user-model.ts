@@ -6,9 +6,11 @@ import { type NewUserType, type UserType } from "../types/user-types";
 export class UserModel {
   async addUser(newUser: NewUserType) {
     try {
-      await dbConnectionPool.query("CALL addUser(?,?)", [
+      await dbConnectionPool.query("CALL addUser(?,?,?,?)", [
         newUser.email,
         newUser.hashed_password,
+        newUser.firstName,
+        newUser.lastName
       ]);
 
       const newUserDataInDb = await this.loadSingleUserByEmail(newUser.email);
@@ -20,11 +22,14 @@ export class UserModel {
 
       return newUserDataInDb;
     } catch (error: any) {
-      let errorMessage = `An error occurred while inserting ${newUser.email} into the database.`;
+      let errorMessage = `An error occurred while creating ${newUser.email}. Please try again.`;
       if (error.message.startsWith("Duplicate entry")) {
         errorMessage = `The email ${newUser.email} is already taken.`;
       }
-      console.error(errorMessage, error);
+      console.error(
+        `An error occurred while inserting ${newUser.email} into the database.`,
+        error
+      );
       throw new Error(errorMessage);
     }
   }
