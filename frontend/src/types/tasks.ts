@@ -13,7 +13,7 @@ export type TaskCategoryType = {
 };
 
 export type AllTasksDataType = {
-  tasks: Record<string, TaskType>;                  // `tasks` object keys expected to be taskIds
+  tasks: Record<string, TaskType>;                          // `tasks` object keys expected to be taskIds
   taskCategories: Record<string, TaskCategoryType>;         // `taskCategory` object keys expected to be taskCategoryIds
   taskCategoryIdsOrder: string[];
 };

@@ -7,7 +7,6 @@ export type UserType = {
 export type NewUserType = {
   email: string;
   hashed_password: string;
-  user_id?: number;
 };
 
 export type UserLoginRequestType = {

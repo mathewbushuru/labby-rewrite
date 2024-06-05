@@ -1,16 +1,16 @@
 USE `checklistsDB`;
 
-DROP TABLE IF EXISTS `users`;
-DROP PROCEDURE IF EXISTS `createUsers`;
-
 DELIMITER $$
 
+DROP PROCEDURE IF EXISTS `createUsers`;
 CREATE PROCEDURE `createUsers` ()
 BEGIN
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
     user_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
-    hashed_password VARCHAR(255) NOT NULL
+    hashed_password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT(now())
 );
 END $$
 

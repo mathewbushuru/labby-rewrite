@@ -61,11 +61,11 @@ export default class UserController {
     try {
       const newUserData = await userModel.addUser(signupDatabaseData);
 
-      const { hashed_password, ...usedDataWithoutPassword } = newUserData;
+      const { hashed_password, ...userDataWithoutPassword } = newUserData;
 
       console.log(`[${signupDatabaseData.email}]: Sign up successful`);
 
-      return res.status(201).json(usedDataWithoutPassword);
+      return res.status(201).json(userDataWithoutPassword);
     } catch (error: any) {
       const errorMessage = error?.message || "Something went wrong.";
       return res.status(500).json({ errorMessage });
@@ -123,7 +123,7 @@ export default class UserController {
       console.log(`[${loginRequestData.email}]: Login successful`);
 
       const jwtToken = jwt.sign(
-        { userId: userDataWithoutPassword.user_id },
+        { user_id: userDataWithoutPassword.user_id },
         process.env.JWT_SECRET_KEY!,
         { algorithm: "HS256", expiresIn: this.TIME_BEFORE_JWT_TOKEN_EXPIRES }
       );

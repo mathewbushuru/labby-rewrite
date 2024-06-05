@@ -7,3 +7,5 @@ USE checklistsDB;
 SHOW TABLES;
 
 SELECT * FROM users;
+
+SELECT * FROM tasks;
