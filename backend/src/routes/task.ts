@@ -1,10 +1,10 @@
 import { Router } from "express";
 
-const router =  Router();
+import TaskController from "../controllers/task-controller";
 
-router.get("/all", (req, res) => {
-    console.log("Get all tasks");
-    return res.json("All tasks");
-})
+const router = Router();
+const taskController = new TaskController();
+
+router.get("/all", (req, res) => taskController.getAllTasks(req, res));
 
 export default router;
