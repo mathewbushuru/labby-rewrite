@@ -105,10 +105,10 @@ function SearchTasks() {
       };
     }
 
-    const filteredAllTasksData = {
+    const filteredAllTasksData: AllTasksDataType = {
       ...allTasksData,
       tasks: filteredTasks,
-      columns: filteredTaskCategories,
+      taskCategories: filteredTaskCategories,
     };
 
     dispatch(setAllTasksData(filteredAllTasksData));
