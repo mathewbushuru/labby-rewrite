@@ -6,6 +6,7 @@ import "dotenv/config";
 
 // Routes imports
 import userRoutes from "./routes/user";
+import  taskRoutes from "./routes/task"
 import testRoutes from "./routes/test";
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/task", taskRoutes);
 app.use("/test", testRoutes);
 
 // 404 route handler
