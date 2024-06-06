@@ -130,7 +130,7 @@ function SearchTasks() {
 function NewTask() {
   const dispatch = useAppDispatch();
 
-  const userId = useAppSelector((state) => state.auth.user?.user_id)!;
+  const userId = useAppSelector((state) => state.auth.user?.userId)!;
 
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");

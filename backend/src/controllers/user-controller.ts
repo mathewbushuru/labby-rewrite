@@ -25,7 +25,7 @@ export default class UserController {
   async signupUser(req: Request, res: Response) {
     const signupRequestData = req.body as Omit<
       NewUserType,
-      "hashed_password"
+      "hashedPassword"
     > & {
       password: string;
     };
@@ -68,7 +68,7 @@ export default class UserController {
 
     const signupDatabaseData: NewUserType = {
       email: signupRequestData.email,
-      hashed_password: hashedPassword,
+      hashedPassword: hashedPassword,
       firstName: signupRequestData.firstName,
       lastName: signupRequestData.lastName
     };
@@ -76,7 +76,7 @@ export default class UserController {
     try {
       const newUserData = await userModel.addUser(signupDatabaseData);
 
-      const { hashed_password, ...userDataWithoutPassword } = newUserData;
+      const { hashedPassword, ...userDataWithoutPassword } = newUserData;
 
       console.log(`[${signupDatabaseData.email}]: Sign up successful`);
 
@@ -123,7 +123,7 @@ export default class UserController {
         return res.status(401).json({ errorMessage });
       }
 
-      const { hashed_password: hashedPassword, ...userDataWithoutPassword } =
+      const { hashedPassword, ...userDataWithoutPassword } =
         userData;
 
       const passwordMatches = await this.checkUserPassword(
@@ -139,7 +139,7 @@ export default class UserController {
       console.log(`[${loginRequestData.email}]: Login successful`);
 
       const jwtToken = jwt.sign(
-        { user_id: userDataWithoutPassword.user_id },
+        { userId: userDataWithoutPassword.userId },
         process.env.JWT_SECRET_KEY!,
         { algorithm: "HS256", expiresIn: this.TIME_BEFORE_JWT_TOKEN_EXPIRES }
       );

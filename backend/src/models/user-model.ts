@@ -8,9 +8,9 @@ export class UserModel {
     try {
       await dbConnectionPool.query("CALL addUser(?,?,?,?)", [
         newUser.email,
-        newUser.hashed_password,
+        newUser.hashedPassword,
         newUser.firstName,
-        newUser.lastName
+        newUser.lastName,
       ]);
 
       const newUserDataInDb = await this.loadSingleUserByEmail(newUser.email);
@@ -46,7 +46,16 @@ export class UserModel {
         return null;
       }
 
-      return userRows[0] as UserType;
+      const userData: UserType = {
+        userId: userRows[0].user_id,
+        email: userRows[0].email,
+        hashedPassword: userRows[0].hashed_password,
+        firstName: userRows[0].first_name,
+        lastName: userRows[0].last_name,
+        createdAt: userRows[0].created_at,
+      };
+
+      return userData;
     } catch (error) {
       const errorMessage = `Error loading user with email ${email} by id.`;
       console.error(errorMessage, error);
@@ -54,11 +63,11 @@ export class UserModel {
     }
   }
 
-  async loadSingleUserById(user_id: UserType["user_id"]) {
+  async loadSingleUserById(userId: UserType["userId"]) {
     try {
       const [queryResult] = await dbConnectionPool.query<RowDataPacket[]>(
         "CALL loadSingleUserById(?)",
-        [user_id]
+        [userId]
       );
 
       const userRows = queryResult[0] as RowDataPacket[];
@@ -66,9 +75,18 @@ export class UserModel {
         return null;
       }
 
-      return userRows[0] as UserType;
+      const userData: UserType = {
+        userId: userRows[0].user_id,
+        email: userRows[0].email,
+        hashedPassword: userRows[0].hashed_password,
+        firstName: userRows[0].first_name,
+        lastName: userRows[0].last_name,
+        createdAt: userRows[0].created_at,
+      };
+
+      return userData;
     } catch (error) {
-      const errorMessage = `Error loading user with id ${user_id} by id.`;
+      const errorMessage = `Error loading user with id ${userId} by id.`;
       console.error(errorMessage, error);
       throw new Error(errorMessage);
     }

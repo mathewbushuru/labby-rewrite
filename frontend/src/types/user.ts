@@ -1,6 +1,10 @@
 export type BackendUserType = {
+  userId: string;
   email: string;
-  user_id: string;
+  hashedPassword: string;
+  firstName: string;
+  lastName: string;
+  createdAt: string;
 };
 
 export type LoginRequestType = {

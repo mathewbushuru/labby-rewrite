@@ -1,15 +1,15 @@
 export type UserType = {
+  userId: number;
   email: string;
-  hashed_password: string;
-  user_id: number;
+  hashedPassword: string;
   firstName: string;
   lastName: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export type NewUserType = {
   email: string;
-  hashed_password: string;
+  hashedPassword: string;
   firstName: string;
   lastName: string;
 };
@@ -19,7 +19,7 @@ export type UserLoginRequestType = {
   password: string;
 };
 
-export type UserLoginSuccessResponseType = Omit<UserType, "hashed_password"> & {
+export type UserLoginSuccessResponseType = Omit<UserType, "hashedPassword"> & {
   jwtToken: string;
   message: string;
 };

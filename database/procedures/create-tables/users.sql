@@ -5,7 +5,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS `createUsers`;
 CREATE PROCEDURE `createUsers` ()
 BEGIN
-DROP TABLE IF EXISTS `tasks`;
+DROP TABLE IF EXISTS `tasks`;       -- has fk to user_id
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
     user_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
