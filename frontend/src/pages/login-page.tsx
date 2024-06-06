@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
-import { useLoginMutation } from "@/api";
+import { useLoginMutation } from "@/api/auth";
 import { useAppDispatch } from "@/store/store";
 import { setCredentials } from "@/store/features/auth-slice";
 

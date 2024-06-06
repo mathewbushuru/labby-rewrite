@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { useSignupMutation } from "@/api";
+import { useSignupMutation } from "@/api/auth";
 
 import { InputBorderBottom } from "@/components/ui/input";
 import { PrimaryButton, PrimaryButtonLink } from "@/components/ui/button";

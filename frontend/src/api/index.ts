@@ -1,12 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { type RootState } from "@/store/store";
-import {
-  type LoginRequestType,
-  type LoginResponseType,
-  type SignupRequestType,
-  type BackendUserType,
-} from "@/types/user";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -30,27 +24,10 @@ const checklistsApi = createApi({
     getRoot: builder.query<string, void>({
       query: () => `/`,
     }),
-
-    login: builder.mutation<LoginResponseType, LoginRequestType>({
-      query: (credentials) => ({
-        url: "/user/login",
-        method: "POST",
-        body: credentials,
-      }),
-      invalidatesTags: [],
-    }),
-
-    signup: builder.mutation<BackendUserType, SignupRequestType>({
-      query: (signupData) => ({
-        url: "/user/signup",
-        method: "POST",
-        body: signupData,
-      }),
-    }),
+    // other endpoints injected from different files
   }),
 });
 
-export const { useGetRootQuery, useLoginMutation, useSignupMutation } =
-  checklistsApi;
+export const { useGetRootQuery } = checklistsApi;
 
 export default checklistsApi;
