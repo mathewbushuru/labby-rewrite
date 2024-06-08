@@ -11,7 +11,7 @@ export type NewTaskType = {
   taskName: string;
   taskDescription: string;
   taskCreatorId: number;
-  taskColourId: number;
+  taskColourId?: number;
 };
 
 export type TaskCategoryType = {

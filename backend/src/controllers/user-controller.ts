@@ -22,19 +22,13 @@ export default class UserController {
    * Public methods
    */
   // POST /user/signup
-  async signupUser(req: Request, res: Response) {
+  async postSignupUser(req: Request, res: Response) {
     const signupRequestData = req.body as Omit<
       NewUserType,
       "hashedPassword"
     > & {
       password: string;
     };
-
-    if (!signupRequestData) {
-      return res
-        .status(400)
-        .json({ errorMessage: "User data is required sign up." });
-    }
 
     if (!signupRequestData.email) {
       return res
@@ -88,7 +82,7 @@ export default class UserController {
   }
   
   // POST /user/login
-  async loginUser(req: Request, res: Response) {
+  async postLoginUser(req: Request, res: Response) {
     const loginRequestData = req.body as UserLoginRequestType;
 
     if (!loginRequestData) {

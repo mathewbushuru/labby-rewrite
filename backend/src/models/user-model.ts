@@ -36,12 +36,12 @@ export class UserModel {
 
   async loadSingleUserByEmail(email: UserType["email"]) {
     try {
-      const [queryResult] = await db.query<RowDataPacket[]>(
+      const [queryResult] = await db.query<RowDataPacket[][]>(
         "CALL loadSingleUserByEmail(?)",
         [email]
       );
 
-      const userRows = queryResult[0] as RowDataPacket[];
+      const userRows = queryResult[0];
       if (!userRows || userRows.length === 0) {
         return null;
       }
@@ -65,12 +65,12 @@ export class UserModel {
 
   async loadSingleUserById(userId: UserType["userId"]) {
     try {
-      const [queryResult] = await db.query<RowDataPacket[]>(
+      const [queryResult] = await db.query<RowDataPacket[][]>(
         "CALL loadSingleUserById(?)",
         [userId]
       );
 
-      const userRows = queryResult[0] as RowDataPacket[];
+      const userRows = queryResult[0];
       if (!userRows || userRows.length === 0) {
         return null;
       }

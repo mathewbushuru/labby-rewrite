@@ -1,6 +1,7 @@
 USE `checklistsDB`;
 
 DROP PROCEDURE IF EXISTS `addTask`;
+DROP PROCEDURE IF EXISTS `loadSingleTaskById`;
 
 DELIMITER $$
 
@@ -24,6 +25,15 @@ BEGIN
         `_fk_task_creator_id`,
         `_task_colour_id`
     );
+    SELECT * FROM `tasks` WHERE `task_id` = LAST_INSERT_ID();
+END $$
+
+-- loadSingleTaskById
+CREATE PROCEDURE `loadSingleTaskById` (
+    IN `_task_id` BIGINT UNSIGNED
+)
+BEGIN 
+    SELECT * from tasks WHERE task_id = _task_id;
 END $$
 
 DELIMITER ;
