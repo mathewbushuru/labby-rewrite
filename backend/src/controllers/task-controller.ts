@@ -6,6 +6,7 @@ export default class TaskController {
    */
   // GET /task/all
   async getAllTasks(_req: Request, res: Response) {
+    //TODO: get all tasks from database
     return res.json({ message: "Get All Tasks controller." });
   }
 }

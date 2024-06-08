@@ -6,7 +6,7 @@ import "dotenv/config";
 
 // Routes imports
 import userRoutes from "./routes/user";
-import  taskRoutes from "./routes/task"
+import taskRoutes from "./routes/task";
 import testRoutes from "./routes/test";
 
 const app = express();
