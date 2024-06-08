@@ -53,6 +53,7 @@ export default class TaskController {
 
   // GET /task/all
   async getAllTasks(_req: Request, res: Response) {
-    return res.json({ message: "Get All Tasks controller." });
+    const allTasks =  await taskModel.loadAllTasks();
+    return res.json(allTasks);
   }
 }

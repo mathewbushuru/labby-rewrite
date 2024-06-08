@@ -18,9 +18,7 @@ export class TaskModel {
     const rows = queryResult[0];
 
     if (!rows || rows.length === 0) {
-      throw new Error(
-        "An error occurred while creating  this task."
-      );
+      throw new Error("An error occurred while creating  this task.");
     }
 
     const taskData: TaskType = {
@@ -32,6 +30,23 @@ export class TaskModel {
       createdAt: rows[0].created_at,
     };
 
-   return taskData;
+    return taskData;
+  }
+
+  async loadAllTasks() {
+    const [queryResult] = await db.query<RowDataPacket[]>(
+      "SELECT * FROM tasks;"
+    );
+
+    const allTasks: TaskType[] = queryResult.map((dbTask) => ({
+      taskId: dbTask.task_id,
+      taskName: dbTask.task_name,
+      taskDescription: dbTask.task_description,
+      taskCreatorId: dbTask.fk_task_creator_id,
+      taskColourId: dbTask.task_colour_id,
+      createdAt: dbTask.created_at,
+    }));
+
+    return allTasks;
   }
 }
