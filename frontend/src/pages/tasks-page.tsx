@@ -9,6 +9,7 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
+import { useLoadAllTasksQuery } from "@/api/task";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import {
   setAllTasksData,
@@ -43,6 +44,12 @@ import {
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
+
+  const { data: _ } = useLoadAllTasksQuery();
+
+  const tasksInStore = useAppSelector(state => state.tasks.tasks);
+  console.log(tasksInStore);
+
   return (
     <div className="flex h-screen items-start">
       <div
@@ -338,7 +345,7 @@ function TaskColumn({
             className={`min-h-10 rounded-md sm:min-h-20 ${snapshot.isDraggingOver ? "bg-primaryLight opacity-20" : "bg-inherit"}`}
           >
             {allTasksInColumn.map((taskData, index) => (
-              <Task key={taskData.id} taskData={taskData} index={index} />
+              <Task key={taskData.taskId} taskData={taskData} index={index} />
             ))}
             {provided.placeholder}
           </div>
@@ -365,7 +372,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
       return;
     }
     dispatch(
-      updateTaskData({ taskId: taskData.id, taskName, taskDescription }),
+      updateTaskData({ taskId: taskData.taskId, taskName, taskDescription }),
     );
     toast.success(`'${taskName}' task updated successfully.`);
   };
@@ -373,7 +380,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   const taskColourId = taskData.taskColourId;
 
   return (
-    <Draggable draggableId={taskData.id} index={index}>
+    <Draggable draggableId={taskData.taskId} index={index}>
       {(provided) => (
         <Dialog>
           <DialogTrigger asChild>
@@ -390,7 +397,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
               </div>
               <div className="space-y-1 p-4">
                 <div className="text-sm font-semibold text-darkGray">
-                  {taskData.id.toUpperCase()}
+                  {taskData.taskId.toUpperCase()}
                 </div>
                 <div className="text-sm">{taskData.taskName}</div>
               </div>
@@ -398,7 +405,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
           </DialogTrigger>
           <DialogContent>
             <h3 className="text-xl font-bold tracking-wide">
-              {taskData.id.toUpperCase()}
+              {taskData.taskId.toUpperCase()}
             </h3>
             <PrimaryInput
               placeholder="Task name..."

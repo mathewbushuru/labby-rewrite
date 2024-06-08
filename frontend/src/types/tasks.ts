@@ -1,9 +1,10 @@
 export type TaskType = {
-  id: string;
+  taskId: string;
   taskName: string;
   taskDescription: string;
   taskCreatorId: string;
-  taskColourId?: number;
+  taskColourId: number;
+  createdAt: string;
 };
 
 export type TaskCategoryType = {

@@ -1,43 +1,49 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+import taskApi from "@/api/task";
 import { type AllTasksDataType, type TaskType } from "@/types/tasks";
 
-const initialAllTasksState: AllTasksDataType = {
+const initialAllTasksState2: AllTasksDataType = {
   tasks: {
     "task-1": {
-      id: "task-1",
+      taskId: "task-1",
       taskName: "Acme Ecommerce App",
       taskDescription: "",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
+      createdAt: "2024-06-08T19:57:52.000Z",
     },
     "task-2": {
-      id: "task-2",
+      taskId: "task-2",
       taskName: "Checklists App",
       taskDescription: "",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
+      createdAt: "2024-06-08T19:57:52.000Z",
     },
     "task-3": {
-      id: "task-3",
+      taskId: "task-3",
       taskName: "Flix App",
       taskDescription: "",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
+      createdAt: "2024-06-08T19:57:52.000Z",
     },
     "task-4": {
-      id: "task-4",
+      taskId: "task-4",
       taskName: "Outfits App",
       taskDescription: "",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
+      createdAt: "2024-06-08T19:57:52.000Z",
     },
     "task-5": {
-      id: "task-5",
+      taskId: "task-5",
       taskName: "Battleship Game",
       taskDescription: "",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
+      createdAt: "2024-06-08T19:57:52.000Z",
     },
   },
   taskCategories: {
@@ -60,6 +66,32 @@ const initialAllTasksState: AllTasksDataType = {
       id: "completed",
       name: "Completed",
       taskIds: ["task-5"],
+    },
+  },
+  taskCategoryIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
+};
+const initialAllTasksState: AllTasksDataType = {
+  tasks: {},
+  taskCategories: {
+    "adopt-me": {
+      id: "adopt-me",
+      name: "Adopt Me",
+      taskIds: [],
+    },
+    "to-do": {
+      id: "to-do",
+      name: "To Do",
+      taskIds: [],
+    },
+    "in-progress": {
+      id: "in-progress",
+      name: "In Progress",
+      taskIds: [],
+    },
+    completed: {
+      id: "completed",
+      name: "Completed",
+      taskIds: [],
     },
   },
   taskCategoryIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
@@ -89,18 +121,19 @@ const tasksSlice = createSlice({
     ) => {
       const newId = `task-${Math.floor(Math.random() * 1000)}`;
       const newTaskData: TaskType = {
-        id: newId,
+        taskId: newId,
         taskName: action.payload.taskName,
         taskDescription: action.payload.taskDescription,
         taskCreatorId: action.payload.taskCreatorId,
         taskColourId: Math.floor(Math.random() * 5 + 1),
+        createdAt: new Date().toISOString(),
       };
       state.tasks[newId] = newTaskData;
       state.taskCategories[action.payload.taskCategoryId].taskIds.push(newId);
       state.resetTasksData.tasks[newId] = newTaskData;
-      state.resetTasksData.taskCategories[action.payload.taskCategoryId].taskIds.push(
-        newId,
-      );
+      state.resetTasksData.taskCategories[
+        action.payload.taskCategoryId
+      ].taskIds.push(newId);
     },
     updateTaskData: (
       state,
@@ -119,6 +152,32 @@ const tasksSlice = createSlice({
       state.resetTasksData.tasks[action.payload.taskId].taskDescription =
         action.payload.taskDescription;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        taskApi.endpoints.loadAllTasks.matchPending,
+        (_state, action) => {
+          console.log("Load all tasks pending", action);
+        },
+      )
+      .addMatcher(
+        taskApi.endpoints.loadAllTasks.matchFulfilled,
+        (state, action) => {
+          console.log("Load all tasks fulfilled", action);
+          state.tasks = action.payload;
+        },
+      )
+      .addMatcher(
+        taskApi.endpoints.loadAllTasks.matchRejected,
+        (_state, action) => {
+          console.log("Load all tasks rejected", action);
+          return {
+            ...initialAllTasksState,
+            resetTasksData: initialAllTasksState,
+          };
+        },
+      );
   },
 });
 

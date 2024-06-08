@@ -10,6 +10,7 @@ CREATE TABLE `tasks`(
     task_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     task_name VARCHAR(100) NOT NULL,
     task_description VARCHAR(255) NOT NULL,
+    task_category VARCHAR(20) DEFAULT "adopt-me",
     fk_task_creator_id BIGINT UNSIGNED NOT NULL,
     task_colour_id TINYINT UNSIGNED NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT(now()),

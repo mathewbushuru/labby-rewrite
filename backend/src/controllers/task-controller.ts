@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 
 import { TaskModel } from "../models/task-model";
-import { type NewTaskType } from "../types/task-types";
+import { type TaskType, type NewTaskType } from "../types/task-types";
 
 const taskModel = new TaskModel();
 
@@ -31,6 +31,18 @@ export default class TaskController {
       });
     }
 
+    if (!createTaskRequestData.taskCategory) {
+      createTaskRequestData.taskCategory = "adopt-me";
+    }
+
+    if (
+      !["adopt-me", "to-do", "in-progress", "completed"].includes(
+        createTaskRequestData.taskCategory
+      )
+    ) {
+      createTaskRequestData.taskCategory = "adopt-me";
+    }
+
     if (!createTaskRequestData.taskColourId) {
       createTaskRequestData.taskColourId = Math.floor(Math.random() * 5 + 1);
     }
@@ -40,7 +52,8 @@ export default class TaskController {
       return res.status(201).json(newTaskData);
     } catch (error: any) {
       console.error(error);
-      let errorMessage = error?.message || "Something went wrong.";
+      let errorMessage =
+        "Something went wrong when creating new task, try again.";
       if (
         errorMessage ===
         "Cannot add or update a child row: a foreign key constraint fails (`checklistsdb`.`tasks`, CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`fk_task_creator_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE)"
@@ -53,7 +66,18 @@ export default class TaskController {
 
   // GET /task/all
   async getAllTasks(_req: Request, res: Response) {
-    const allTasks =  await taskModel.loadAllTasks();
-    return res.json(allTasks);
+    try {
+      const allTasksArr = await taskModel.loadAllTasks();
+
+      const allTasksObj: Record<number, TaskType> = {};
+      for (let task of allTasksArr) {
+        allTasksObj[task.taskId] = task;
+      }
+
+      return res.json(allTasksObj);
+    } catch (error: any) {
+      console.error(error);
+      return res.status(500).json({ errorMessage: "Something went wrong." });
+    }
   }
 }
