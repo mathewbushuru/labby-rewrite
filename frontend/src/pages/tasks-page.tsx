@@ -45,7 +45,7 @@ import {
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
 
-  const { data: _ } = useLoadAllTasksQuery();
+  const { isLoading } = useLoadAllTasksQuery();
 
   return (
     <div className="flex h-screen items-start">
@@ -58,7 +58,9 @@ export default function TasksPage() {
         className={`h-full flex-1 space-y-6 overflow-y-auto py-9 sm:py-10 ${showMobileSideNavbar ? "px-4" : "px-8"}`}
       >
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-wide">Tasks</h1>
+          <h1 className="text-3xl font-bold tracking-wide">
+            Tasks {isLoading && <span className="text-xs">Loading...</span>}
+          </h1>
           <img
             src="/Hamburger.svg"
             className="h-6 w-6 sm:hidden"

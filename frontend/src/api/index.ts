@@ -4,7 +4,7 @@ import { type RootState } from "@/store/store";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-console.log(`Connecting to server:  ${SERVER_URL}`);
+console.log(`Server URL:  ${SERVER_URL}`);
 
 const checklistsApi = createApi({
   reducerPath: "checklistsApi",

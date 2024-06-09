@@ -36,8 +36,7 @@ const privateRouter = createBrowserRouter([
 ]);
 
 function AppRouter() {
-  const { data } = useGetRootQuery();
-  data && console.log(data);
+  const { data: _ } = useGetRootQuery();
 
   const user = useAppSelector((state) => state.auth.user);
 

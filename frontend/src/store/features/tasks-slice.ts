@@ -3,78 +3,6 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import taskApi from "@/api/task";
 import { type AllTasksDataType, type TaskType } from "@/types/tasks";
 
-const initialAllTasksState2: AllTasksDataType = {
-  tasks: {
-    "task-1": {
-      taskId: "task-1",
-      taskName: "Acme Ecommerce App",
-      taskDescription: "",
-      taskCategory: "in-progress",
-      taskCreatorId: "1",
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-      createdAt: "2024-06-08T19:57:52.000Z",
-    },
-    "task-2": {
-      taskId: "task-2",
-      taskName: "Checklists App",
-      taskDescription: "",
-      taskCategory: "in-progress",
-      taskCreatorId: "1",
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-      createdAt: "2024-06-08T19:57:52.000Z",
-    },
-    "task-3": {
-      taskId: "task-3",
-      taskName: "Flix App",
-      taskDescription: "",
-      taskCategory: "to-do",
-      taskCreatorId: "1",
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-      createdAt: "2024-06-08T19:57:52.000Z",
-    },
-    "task-4": {
-      taskId: "task-4",
-      taskName: "Outfits App",
-      taskDescription: "",
-      taskCategory: "adopt-me",
-      taskCreatorId: "1",
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-      createdAt: "2024-06-08T19:57:52.000Z",
-    },
-    "task-5": {
-      taskId: "task-5",
-      taskName: "Battleship Game",
-      taskDescription: "",
-      taskCategory: "completed",
-      taskCreatorId: "1",
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-      createdAt: "2024-06-08T19:57:52.000Z",
-    },
-  },
-  taskCategories: {
-    "adopt-me": {
-      id: "adopt-me",
-      name: "Adopt Me",
-      taskIds: ["task-4"],
-    },
-    "to-do": {
-      id: "to-do",
-      name: "To Do",
-      taskIds: ["task-3"],
-    },
-    "in-progress": {
-      id: "in-progress",
-      name: "In Progress",
-      taskIds: ["task-1", "task-2"],
-    },
-    completed: {
-      id: "completed",
-      name: "Completed",
-      taskIds: ["task-5"],
-    },
-  },
-  taskCategoryIdsOrder: ["adopt-me", "to-do", "in-progress", "completed"],
-};
 const initialAllTasksState: AllTasksDataType = {
   tasks: {},
   taskCategories: {
@@ -174,7 +102,9 @@ const tasksSlice = createSlice({
           for (let taskId in action.payload) {
             let taskCategory = action.payload[taskId].taskCategory;
             state.taskCategories[taskCategory].taskIds.push(taskId);
-            state.resetTasksData.taskCategories[taskCategory].taskIds.push(taskId);
+            state.resetTasksData.taskCategories[taskCategory].taskIds.push(
+              taskId,
+            );
           }
         },
       )
