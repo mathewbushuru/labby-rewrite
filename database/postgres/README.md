@@ -9,3 +9,8 @@ I have replaced some procedures in the MySQL directory with functions in postgre
 ##### Creating database tables for first time (order)
 
 1. `\i postgres/functions/create-tables/users.sql`
+2. `\i postgres/functions/create-tables/tasks.sql`
+
+##### Reset all database tables (delete then create)
+
+- `\i postgres/functions/create-tables-fn.sql`

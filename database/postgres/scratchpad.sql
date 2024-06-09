@@ -3,6 +3,8 @@
 -- show databases
 SELECT datname FROM pg_database;
 
--- show tables
+-- show tables (\dt in psql)
 SELECT table_name FROM information_schema.tables
     WHERE table_schema = 'public';
+
+

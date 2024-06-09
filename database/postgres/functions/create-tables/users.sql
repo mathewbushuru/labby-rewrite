@@ -4,6 +4,7 @@ DROP FUNCTION IF EXISTS createUsers();
 
 CREATE OR REPLACE FUNCTION createUsers() RETURNS void AS $$
 BEGIN
+    DROP TABLE IF EXISTS tasks;         -- has fk to user_id
     DROP TABLE IF EXISTS users;
     CREATE TABLE users (
         user_id BIGSERIAL PRIMARY KEY,
