@@ -1,11 +1,11 @@
 import { type RowDataPacket, type ResultSetHeader } from "mysql2";
 
-import db from "../config/database";
+import { mysqlConnectionPool } from "../config/database";
 import { type NewTaskType, type TaskType } from "../types/task-types";
 
 export class TaskModel {
   async addTask(newTask: NewTaskType) {
-    const [insertQueryResult] = await db.query<ResultSetHeader>(
+    const [insertQueryResult] = await mysqlConnectionPool.query<ResultSetHeader>(
       `INSERT INTO tasks 
               (
                 task_name,
@@ -23,7 +23,7 @@ export class TaskModel {
             ]
     );
 
-    const [rows] = await db.query<RowDataPacket[]>(
+    const [rows] = await mysqlConnectionPool.query<RowDataPacket[]>(
       `SELECT * FROM tasks WHERE task_id  =  ?`,
       insertQueryResult.insertId
     );
@@ -42,7 +42,7 @@ export class TaskModel {
   }
 
   async loadAllTasks() {
-    const [queryResult] = await db.query<RowDataPacket[]>(
+    const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[]>(
       "SELECT * FROM tasks;"
     );
 

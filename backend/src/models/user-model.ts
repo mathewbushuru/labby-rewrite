@@ -1,12 +1,12 @@
 import { type RowDataPacket } from "mysql2";
 
-import db from "../config/database";
+import { mysqlConnectionPool } from "../config/database";
 import { type NewUserType, type UserType } from "../types/user-types";
 
 export class UserModel {
   async addUser(newUser: NewUserType) {
     try {
-      await db.query("CALL addUser(?,?,?,?)", [
+      await mysqlConnectionPool.query("CALL addUser(?,?,?,?)", [
         newUser.email,
         newUser.hashedPassword,
         newUser.firstName,
@@ -33,7 +33,7 @@ export class UserModel {
 
   async loadSingleUserByEmail(email: UserType["email"]) {
     try {
-      const [queryResult] = await db.query<RowDataPacket[][]>(
+      const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
         "CALL loadSingleUserByEmail(?)",
         [email]
       );
@@ -62,7 +62,7 @@ export class UserModel {
 
   async loadSingleUserById(userId: UserType["userId"]) {
     try {
-      const [queryResult] = await db.query<RowDataPacket[][]>(
+      const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
         "CALL loadSingleUserById(?)",
         [userId]
       );
