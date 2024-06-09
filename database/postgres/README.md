@@ -2,7 +2,7 @@ I have replaced some procedures in the MySQL directory with functions in postgre
 
 ##### Initializing the database locally
 
-- Install MySQL
+- Install PostgreSQL
 - On your terminal `psql -U username -W -d checklistsDB`
 - Run database scripts in the shell `\i path/to/script.sql`
 
@@ -13,4 +13,4 @@ I have replaced some procedures in the MySQL directory with functions in postgre
 
 ##### Reset all database tables (delete then create)
 
-- `\i postgres/functions/create-tables-fn.sql`
+- `\i postgres/functions/create-tables-fns.sql`
