@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS addUser(VARCHAR, VARCHAR, VARCHAR, VARCHAR);
 DROP FUNCTION IF EXISTS loadSingleUserById(BIGINT);
 DROP FUNCTION IF EXISTS loadSingleUserByEmail(VARCHAR);
 
--- addUser
+-- addUser (select * from addUser('matt@test.com','password','Matt','B');)
 CREATE OR REPLACE FUNCTION addUser(
     _email VARCHAR,
     _hashed_password VARCHAR,
