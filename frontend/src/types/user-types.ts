@@ -1,7 +1,6 @@
 export type BackendUserType = {
   userId: string;
   email: string;
-  hashedPassword: string;
   firstName: string;
   lastName: string;
   createdAt: string;

@@ -1,7 +1,4 @@
-<!-- ABOUT CHECKLISTS -->
-## Checklists
-
-Checklists is a fork of Labby which is a project that I worked on some time back for BC Cancer. This is a full rewrite from scratch. Some highlights in this fork include migration from JavaScript to TypeScript, making the design mobile responsive, managing server state with Redux Toolkit (RTK) Query instead of Redux Saga, and modifying the backend to support both PosgreSQL and MySQL databases (works with whichever you choose). 
+This is a full-rewrite from scratch of `Labby` which is a lab management system which we built for BC Cancer. My main motivation for this is to remove BC Cancer specific business logic and generalize the app for any use case. Some highlights in this fork include migration from JavaScript to TypeScript, making the design mobile responsive, managing server state with Redux Toolkit (RTK) Query instead of Redux Saga, and modifying the backend to support both PosgreSQL and MySQL databases (works with whichever you choose). 
 
 <!-- PROJECT LOGO -->
 <br />

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { localStorageHelpers } from "@/lib/utils";
-import { type BackendUserType } from "@/types/user";
+import { type BackendUserType } from "@/types/user-types";
 
 type AuthState = {
   user: BackendUserType | null;

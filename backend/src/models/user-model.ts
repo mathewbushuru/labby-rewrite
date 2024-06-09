@@ -22,14 +22,11 @@ export class UserModel {
 
       return newUserDataInDb;
     } catch (error: any) {
+      console.error(error);
       let errorMessage = `An error occurred while creating ${newUser.email}. Please try again.`;
       if (error.message.startsWith("Duplicate entry")) {
         errorMessage = `The email ${newUser.email} is already taken.`;
       }
-      console.error(
-        `An error occurred while inserting ${newUser.email} into the database.`,
-        error
-      );
       throw new Error(errorMessage);
     }
   }

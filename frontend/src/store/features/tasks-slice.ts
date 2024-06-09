@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import taskApi from "@/api/task";
-import { type AllTasksDataType, type TaskType } from "@/types/tasks";
+import taskApi from "@/api/task-api";
+import { type AllTasksDataType, type TaskType } from "@/types/task-types";
 
 const initialAllTasksState: AllTasksDataType = {
   tasks: {},
@@ -38,10 +38,23 @@ const tasksSlice = createSlice({
   },
   reducers: {
     setAllTasksData: (state, action: PayloadAction<AllTasksDataType>) => {
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        ...action.payload,
+        resetTasksData: {
+          ...state.resetTasksData,
+          ...action.payload,
+        },
+      };
     },
     resetAllTasksData: (state) => {
       return { ...state.resetTasksData, resetTasksData: state.resetTasksData };
+    },
+    filterTasksOnSearch: (state, action: PayloadAction<AllTasksDataType>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
     addNewTask: (
       state,
@@ -62,8 +75,10 @@ const tasksSlice = createSlice({
         taskColourId: Math.floor(Math.random() * 5 + 1),
         createdAt: new Date().toISOString(),
       };
+
       state.tasks[newId] = newTaskData;
       state.taskCategories[action.payload.taskCategory].taskIds.push(newId);
+
       state.resetTasksData.tasks[newId] = newTaskData;
       state.resetTasksData.taskCategories[
         action.payload.taskCategory
@@ -124,6 +139,7 @@ const tasksSlice = createSlice({
 export const {
   setAllTasksData,
   resetAllTasksData,
+  filterTasksOnSearch,
   addNewTask,
   updateTaskData,
 } = tasksSlice.actions;

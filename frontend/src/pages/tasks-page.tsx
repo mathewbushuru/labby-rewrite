@@ -9,11 +9,12 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
-import { useLoadAllTasksQuery } from "@/api/task";
+import { useLoadAllTasksQuery } from "@/api/task-api";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import {
   setAllTasksData,
   resetAllTasksData,
+  filterTasksOnSearch,
   addNewTask,
   updateTaskData,
 } from "@/store/features/tasks-slice";
@@ -40,7 +41,7 @@ import {
   type TaskType,
   type TaskCategoryType,
   type AllTasksDataType,
-} from "@/types/tasks";
+} from "@/types/task-types";
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);
@@ -95,7 +96,8 @@ function SearchTasks() {
       currTask = allTasksData.tasks[taskId];
       if (
         currTask.taskName.toLowerCase().includes(searchTerm) ||
-        currTask.taskDescription.toLowerCase().includes(searchTerm)
+        currTask.taskDescription.toLowerCase().includes(searchTerm) ||
+        `task - ${currTask.taskId}`.includes(searchTerm)
       ) {
         filteredTasks[taskId] = currTask;
       }
@@ -117,7 +119,16 @@ function SearchTasks() {
       taskCategories: filteredTaskCategories,
     };
 
-    dispatch(setAllTasksData(filteredAllTasksData));
+    dispatch(filterTasksOnSearch(filteredAllTasksData));
+  };
+
+  const handleResetBoardOnBackspace = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Backspace" || e.key === "Delete") {
+      dispatch(resetAllTasksData());
+      return;
+    }
   };
 
   return (
@@ -128,6 +139,8 @@ function SearchTasks() {
         placeholder="Search..."
         type="search"
         onChange={handleSearch}
+        onKeyDown={handleResetBoardOnBackspace}
+        autoFocus
       />
     </form>
   );
@@ -382,7 +395,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   const taskColourId = taskData.taskColourId;
 
   return (
-    <Draggable draggableId={`task-${taskData.taskId}`} index={index}>
+    <Draggable draggableId={`${taskData.taskId}`} index={index}>
       {(provided) => (
         <Dialog>
           <DialogTrigger asChild>

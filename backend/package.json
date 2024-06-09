@@ -1,5 +1,5 @@
 {
-  "name": "checklists-backend",
+  "name": "labby-backend",
   "version": "0.0.0",
   "main": "./dist/server.js",
   "scripts": {

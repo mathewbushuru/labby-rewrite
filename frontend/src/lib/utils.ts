@@ -1,6 +1,6 @@
 export const localStorageHelpers = {
   getToken: function (): string | null {
-    const token = window.localStorage.getItem("checklists_token");
+    const token = window.localStorage.getItem("labby_token");
     if (token) {
       return JSON.parse(token);
     } else {
@@ -8,9 +8,9 @@ export const localStorageHelpers = {
     }
   },
   setToken: function (token: string) {
-    window.localStorage.setItem("checklists_token", JSON.stringify(token));
+    window.localStorage.setItem("labby_token", JSON.stringify(token));
   },
   removeToken: function () {
-    window.localStorage.removeItem("checklists_token");
+    window.localStorage.removeItem("labby_token");
   },
 };

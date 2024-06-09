@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
-import { useLoginMutation } from "@/api/auth";
+import { useLoginMutation } from "@/api/auth-api";
 import { useAppDispatch } from "@/store/store";
 import { setCredentials } from "@/store/features/auth-slice";
 
@@ -13,7 +13,7 @@ import {
   SecondaryButtonLink,
 } from "@/components/ui/button";
 
-import { LoginRequestType } from "@/types/user";
+import { LoginRequestType } from "@/types/user-types";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();

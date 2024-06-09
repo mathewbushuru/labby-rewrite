@@ -5,7 +5,7 @@ import {
   type LoginResponseType,
   type SignupRequestType,
   type BackendUserType,
-} from "@/types/user";
+} from "@/types/user-types";
 
 const authApi = checklistsApi.injectEndpoints({
   endpoints: (builder) => ({

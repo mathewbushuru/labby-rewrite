@@ -1,6 +1,6 @@
 import checklistsApi from ".";
 
-import { type TaskType } from "@/types/tasks";
+import { type TaskType } from "@/types/task-types";
 
 const taskApi = checklistsApi.injectEndpoints({
   endpoints: (builder) => ({

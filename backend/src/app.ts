@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.get("/", (req: Request, res: Response, _next: NextFunction) => {
-  return res.json({ message: "Checklists API" });
+  return res.json({ message: "Labby API" });
 });
 
 app.use("/user", userRoutes);

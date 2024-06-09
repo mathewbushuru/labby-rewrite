@@ -14,7 +14,7 @@ export class TaskModel {
                 fk_task_creator_id,
                 task_colour_id
               ) VALUES (?, ?, ?, ?, ?);`,
-      [
+              [
                 newTask.taskName,
                 newTask.taskDescription,
                 newTask.taskCategory,

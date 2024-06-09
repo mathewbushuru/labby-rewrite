@@ -62,9 +62,9 @@ export default class UserController {
 
     const signupDatabaseData: NewUserType = {
       email: signupRequestData.email,
-      hashedPassword: hashedPassword,
+      hashedPassword,
       firstName: signupRequestData.firstName,
-      lastName: signupRequestData.lastName
+      lastName: signupRequestData.lastName,
     };
 
     try {
@@ -80,16 +80,10 @@ export default class UserController {
       return res.status(500).json({ errorMessage });
     }
   }
-  
+
   // POST /user/login
   async postLoginUser(req: Request, res: Response) {
     const loginRequestData = req.body as UserLoginRequestType;
-
-    if (!loginRequestData) {
-      return res
-        .status(400)
-        .json({ errorMessage: "Email and password is required log in." });
-    }
 
     if (!loginRequestData.email) {
       return res
@@ -117,8 +111,7 @@ export default class UserController {
         return res.status(401).json({ errorMessage });
       }
 
-      const { hashedPassword, ...userDataWithoutPassword } =
-        userData;
+      const { hashedPassword, ...userDataWithoutPassword } = userData;
 
       const passwordMatches = await this.checkUserPassword(
         loginRequestData.password,
