@@ -47,9 +47,6 @@ export default function TasksPage() {
 
   const { data: _ } = useLoadAllTasksQuery();
 
-  const tasksInStore = useAppSelector(state => state.tasks.tasks);
-  console.log(tasksInStore);
-
   return (
     <div className="flex h-screen items-start">
       <div
@@ -141,7 +138,8 @@ function NewTask() {
 
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
-  const [taskCategoryId, setTaskCategoryId] = useState("adopt-me");
+  const [taskCategory, setTaskCategory] =
+    useState<TaskType["taskCategory"]>("adopt-me");
 
   const handleAddNewTask = (
     _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -156,7 +154,7 @@ function NewTask() {
     dispatch(
       addNewTask({
         taskName,
-        taskCategoryId,
+        taskCategory,
         taskDescription,
         taskCreatorId: userId,
       }),
@@ -164,7 +162,7 @@ function NewTask() {
     toast.success(`'${taskName}' task added successfully.`);
     setTaskName("");
     setTaskDescription("");
-    setTaskCategoryId("adopt-me");
+    setTaskCategory("adopt-me");
   };
 
   return (
@@ -186,8 +184,10 @@ function NewTask() {
           onChange={(e) => setTaskDescription(e.target.value)}
         />
         <Select
-          value={taskCategoryId}
-          onValueChange={(newValue) => setTaskCategoryId(newValue)}
+          value={taskCategory}
+          onValueChange={(newValue: TaskType["taskCategory"]) =>
+            setTaskCategory(newValue)
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select task category" />
@@ -380,7 +380,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
   const taskColourId = taskData.taskColourId;
 
   return (
-    <Draggable draggableId={taskData.taskId} index={index}>
+    <Draggable draggableId={`task-${taskData.taskId}`} index={index}>
       {(provided) => (
         <Dialog>
           <DialogTrigger asChild>
@@ -397,7 +397,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
               </div>
               <div className="space-y-1 p-4">
                 <div className="text-sm font-semibold text-darkGray">
-                  {taskData.taskId.toUpperCase()}
+                  TASK - {taskData.taskId}
                 </div>
                 <div className="text-sm">{taskData.taskName}</div>
               </div>
@@ -405,7 +405,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
           </DialogTrigger>
           <DialogContent>
             <h3 className="text-xl font-bold tracking-wide">
-              {taskData.taskId.toUpperCase()}
+              TASK - {taskData.taskId}
             </h3>
             <PrimaryInput
               placeholder="Task name..."

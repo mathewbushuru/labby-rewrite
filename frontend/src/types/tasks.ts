@@ -2,6 +2,7 @@ export type TaskType = {
   taskId: string;
   taskName: string;
   taskDescription: string;
+  taskCategory: "adopt-me" | "to-do" | "in-progress" | "completed";
   taskCreatorId: string;
   taskColourId: number;
   createdAt: string;

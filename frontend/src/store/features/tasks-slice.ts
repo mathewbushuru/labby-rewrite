@@ -9,6 +9,7 @@ const initialAllTasksState2: AllTasksDataType = {
       taskId: "task-1",
       taskName: "Acme Ecommerce App",
       taskDescription: "",
+      taskCategory: "in-progress",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
       createdAt: "2024-06-08T19:57:52.000Z",
@@ -17,6 +18,7 @@ const initialAllTasksState2: AllTasksDataType = {
       taskId: "task-2",
       taskName: "Checklists App",
       taskDescription: "",
+      taskCategory: "in-progress",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
       createdAt: "2024-06-08T19:57:52.000Z",
@@ -25,6 +27,7 @@ const initialAllTasksState2: AllTasksDataType = {
       taskId: "task-3",
       taskName: "Flix App",
       taskDescription: "",
+      taskCategory: "to-do",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
       createdAt: "2024-06-08T19:57:52.000Z",
@@ -33,6 +36,7 @@ const initialAllTasksState2: AllTasksDataType = {
       taskId: "task-4",
       taskName: "Outfits App",
       taskDescription: "",
+      taskCategory: "adopt-me",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
       createdAt: "2024-06-08T19:57:52.000Z",
@@ -41,6 +45,7 @@ const initialAllTasksState2: AllTasksDataType = {
       taskId: "task-5",
       taskName: "Battleship Game",
       taskDescription: "",
+      taskCategory: "completed",
       taskCreatorId: "1",
       taskColourId: Math.floor(Math.random() * 5 + 1),
       createdAt: "2024-06-08T19:57:52.000Z",
@@ -115,24 +120,25 @@ const tasksSlice = createSlice({
       action: PayloadAction<{
         taskName: string;
         taskDescription: string;
-        taskCategoryId: string;
+        taskCategory: TaskType["taskCategory"];
         taskCreatorId: string;
       }>,
     ) => {
-      const newId = `task-${Math.floor(Math.random() * 1000)}`;
+      const newId = `${Math.floor(Math.random() * 1000)}`;
       const newTaskData: TaskType = {
         taskId: newId,
         taskName: action.payload.taskName,
         taskDescription: action.payload.taskDescription,
+        taskCategory: action.payload.taskCategory,
         taskCreatorId: action.payload.taskCreatorId,
         taskColourId: Math.floor(Math.random() * 5 + 1),
         createdAt: new Date().toISOString(),
       };
       state.tasks[newId] = newTaskData;
-      state.taskCategories[action.payload.taskCategoryId].taskIds.push(newId);
+      state.taskCategories[action.payload.taskCategory].taskIds.push(newId);
       state.resetTasksData.tasks[newId] = newTaskData;
       state.resetTasksData.taskCategories[
-        action.payload.taskCategoryId
+        action.payload.taskCategory
       ].taskIds.push(newId);
     },
     updateTaskData: (
@@ -157,15 +163,19 @@ const tasksSlice = createSlice({
     builder
       .addMatcher(
         taskApi.endpoints.loadAllTasks.matchPending,
-        (_state, action) => {
-          console.log("Load all tasks pending", action);
-        },
+        (_state, _action) => {},
       )
       .addMatcher(
         taskApi.endpoints.loadAllTasks.matchFulfilled,
         (state, action) => {
-          console.log("Load all tasks fulfilled", action);
           state.tasks = action.payload;
+          state.resetTasksData.tasks = action.payload;
+
+          for (let taskId in action.payload) {
+            let taskCategory = action.payload[taskId].taskCategory;
+            state.taskCategories[taskCategory].taskIds.push(taskId);
+            state.resetTasksData.taskCategories[taskCategory].taskIds.push(taskId);
+          }
         },
       )
       .addMatcher(
