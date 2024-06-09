@@ -15,9 +15,10 @@ import {
   setAllTasksData,
   resetAllTasksData,
   filterTasksOnSearch,
-  addNewTask,
   updateTaskData,
 } from "@/store/features/tasks-slice";
+
+import { isServerErrorResponse } from "@/lib/utils";
 
 import SideNavbar from "@/components/side-navbar";
 import { PrimaryButton, OutlineButton } from "@/components/ui/button";
@@ -147,8 +148,6 @@ function SearchTasks() {
 }
 
 function NewTask() {
-  const dispatch = useAppDispatch();
-
   const userId = useAppSelector((state) => state.auth.user?.userId)!;
 
   const [taskName, setTaskName] = useState("");
@@ -156,43 +155,45 @@ function NewTask() {
   const [taskCategory, setTaskCategory] =
     useState<TaskType["taskCategory"]>("adopt-me");
 
-  const [createTaskTrigger, { isLoading: _ }] = useCreateTaskMutation();
+  const [createTaskTrigger, { isLoading }] = useCreateTaskMutation();
 
   const handleAddNewTask = async (
     _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    if (!taskName || taskName.length === 0) {
-      toast.error("Add task error", {
-        description: "Task name is required.",
-      });
-      return;
-    }
-
-    const newTaskData = {
-      taskName,
-      taskCategory,
-      taskDescription,
-      taskCreatorId: userId,
-      taskColourId: Math.floor(Math.random() * 5 + 1),
-    };
-
     try {
-      const createTaskResponse = await createTaskTrigger(newTaskData);
-
-      if (createTaskResponse.error) {
+      if (!taskName || taskName.length === 0) {
         toast.error("Add task error", {
-          description: "There was an error adding the task, try again.",
+          description: "Task name is required.",
         });
         return;
       }
 
-      dispatch(addNewTask(createTaskResponse.data));
+      const newTaskData = {
+        taskName,
+        taskCategory,
+        taskDescription,
+        taskCreatorId: userId,
+        taskColourId: Math.floor(Math.random() * 5 + 1),
+      };
+
+      const createTaskResponse = await createTaskTrigger(newTaskData);
+
+      if (createTaskResponse.error) {
+        toast.error("Add task error", {
+          description: isServerErrorResponse(createTaskResponse.error)
+            ? createTaskResponse.error.data.errorMessage
+            : "There was an error adding the task, try again.",
+        });
+        return;
+      }
 
       toast.success(`'${taskName}' task added successfully.`);
     } catch (error: any) {
       console.error(error);
       toast.error("Add task error", {
-        description: "There was an error adding the task, try again.",
+        description: isServerErrorResponse(error)
+          ? error.data.errorMessage
+          : "There was an error adding the task, try again.",
       });
     } finally {
       setTaskName("");
@@ -204,7 +205,9 @@ function NewTask() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <PrimaryButton>New Task</PrimaryButton>
+        <PrimaryButton disabled={isLoading}>
+          {isLoading ? "Adding Task..." : "New Task"}
+        </PrimaryButton>
       </DialogTrigger>
       <DialogContent>
         <h3 className="text-xl font-bold tracking-wide">Add new task</h3>
@@ -427,7 +430,7 @@ function Task({ taskData, index }: { taskData: TaskType; index: number }) {
               className="mb-2 flex overflow-hidden rounded-md bg-white"
             >
               <div
-                className={`w-2 ${taskColourId === 1 ? "bg-task1" : taskColourId === 2 ? "bg-task2" : taskColourId === 3 ? "bg-task3" : taskColourId === 4 ? "bg-task4" : "bg-task5"} `}
+                className={`min-w-2 ${taskColourId === 1 ? "bg-task1" : taskColourId === 2 ? "bg-task2" : taskColourId === 3 ? "bg-task3" : taskColourId === 4 ? "bg-task4" : "bg-task5"} `}
               >
                 &nbsp;
               </div>
