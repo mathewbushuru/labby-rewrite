@@ -7,9 +7,9 @@
 
 ##### Creating database tables for first time (order)
 
-1. `procedures/create-tables/users.sql`
-2. `procedures/create-tables/tasks.sql`
+1. `source mysql/procedures/create-tables/users.sql`
+2. `source mysql/procedures/create-tables/tasks.sql`
 
 ##### Reset all database tables (delete then create)
 
-- `procedures/create-tables-proc.sql`
+- `source mysql/procedures/create-tables-proc.sql`
