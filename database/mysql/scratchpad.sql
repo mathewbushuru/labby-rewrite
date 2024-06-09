@@ -1,4 +1,5 @@
--- mysql -u username -p -> source path/to/script.sql
+-- mysql -u username -p 
+-- source path/to/script.sql
 
 SHOW DATABASES;
 
