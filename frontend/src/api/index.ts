@@ -19,7 +19,7 @@ const checklistsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ["task"],
   endpoints: (builder) => ({
     getRoot: builder.query<string, void>({
       query: () => `/`,

@@ -19,16 +19,14 @@ export default class TaskController {
       });
     }
 
-    if (!createTaskRequestData.taskDescription) {
-      return res.status(400).json({
-        errorMessage: "Task description is required",
-      });
-    }
-
     if (!createTaskRequestData.taskCreatorId) {
       return res.status(400).json({
         errorMessage: "Task creator id is required",
       });
+    }
+
+    if (!createTaskRequestData.taskDescription) {
+      createTaskRequestData.taskDescription = "";
     }
 
     if (!createTaskRequestData.taskCategory) {

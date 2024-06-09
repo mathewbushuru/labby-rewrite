@@ -56,33 +56,16 @@ const tasksSlice = createSlice({
         ...action.payload,
       };
     },
-    addNewTask: (
-      state,
-      action: PayloadAction<{
-        taskName: string;
-        taskDescription: string;
-        taskCategory: TaskType["taskCategory"];
-        taskCreatorId: string;
-      }>,
-    ) => {
-      const newId = `${Math.floor(Math.random() * 1000)}`;
-      const newTaskData: TaskType = {
-        taskId: newId,
-        taskName: action.payload.taskName,
-        taskDescription: action.payload.taskDescription,
-        taskCategory: action.payload.taskCategory,
-        taskCreatorId: action.payload.taskCreatorId,
-        taskColourId: Math.floor(Math.random() * 5 + 1),
-        createdAt: new Date().toISOString(),
-      };
+    addNewTask: (state, action: PayloadAction<TaskType>) => {
+      state.tasks[action.payload.taskId] = action.payload;
+      state.taskCategories[action.payload.taskCategory].taskIds.push(
+        action.payload.taskId,
+      );
 
-      state.tasks[newId] = newTaskData;
-      state.taskCategories[action.payload.taskCategory].taskIds.push(newId);
-
-      state.resetTasksData.tasks[newId] = newTaskData;
+      state.resetTasksData.tasks[action.payload.taskId] = action.payload;
       state.resetTasksData.taskCategories[
         action.payload.taskCategory
-      ].taskIds.push(newId);
+      ].taskIds.push(action.payload.taskId);
     },
     updateTaskData: (
       state,

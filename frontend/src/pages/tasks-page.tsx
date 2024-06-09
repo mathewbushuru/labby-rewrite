@@ -9,7 +9,7 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
-import { useLoadAllTasksQuery } from "@/api/task-api";
+import { useLoadAllTasksQuery, useCreateTaskMutation } from "@/api/task-api";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import {
   setAllTasksData,
@@ -156,7 +156,9 @@ function NewTask() {
   const [taskCategory, setTaskCategory] =
     useState<TaskType["taskCategory"]>("adopt-me");
 
-  const handleAddNewTask = (
+  const [createTaskTrigger, { isLoading: _ }] = useCreateTaskMutation();
+
+  const handleAddNewTask = async (
     _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     if (!taskName || taskName.length === 0) {
@@ -166,18 +168,37 @@ function NewTask() {
       return;
     }
 
-    dispatch(
-      addNewTask({
-        taskName,
-        taskCategory,
-        taskDescription,
-        taskCreatorId: userId,
-      }),
-    );
-    toast.success(`'${taskName}' task added successfully.`);
-    setTaskName("");
-    setTaskDescription("");
-    setTaskCategory("adopt-me");
+    const newTaskData = {
+      taskName,
+      taskCategory,
+      taskDescription,
+      taskCreatorId: userId,
+      taskColourId: Math.floor(Math.random() * 5 + 1),
+    };
+
+    try {
+      const createTaskResponse = await createTaskTrigger(newTaskData);
+
+      if (createTaskResponse.error) {
+        toast.error("Add task error", {
+          description: "There was an error adding the task, try again.",
+        });
+        return;
+      }
+
+      dispatch(addNewTask(createTaskResponse.data));
+
+      toast.success(`'${taskName}' task added successfully.`);
+    } catch (error: any) {
+      console.error(error);
+      toast.error("Add task error", {
+        description: "There was an error adding the task, try again.",
+      });
+    } finally {
+      setTaskName("");
+      setTaskDescription("");
+      setTaskCategory("adopt-me");
+    }
   };
 
   return (
