@@ -1,6 +1,9 @@
 import { type RowDataPacket } from "mysql2";
 
-import { mysqlConnectionPool } from "../config/database";
+import {
+  mysqlConnectionPool,
+  postgresConnectionPool,
+} from "../config/database";
 import { type NewUserType, type UserType } from "../types/user-types";
 
 export class UserModel {
@@ -15,20 +18,67 @@ export class UserModel {
    * Public methods
    */
   async addUser(newUser: NewUserType) {
-    return this.addUserMysql(newUser);
+    return this.MYSQL_OR_POSTGRES === "postgres"
+      ? this.addUserPostgres(newUser)
+      : this.addUserMysql(newUser);
   }
 
   async loadSingleUserByEmail(email: UserType["email"]) {
-    return this.loadSingleUserByEmailMysql(email);
+    return this.MYSQL_OR_POSTGRES === "postgres"
+      ? this.loadSingleUserByEmailMysql(email)
+      : this.loadSingleUserByEmailMysql(email);
   }
 
   async loadSingleUserById(userId: UserType["userId"]) {
-    return this.loadSingleUserByIdMysql(userId);
+    return this.MYSQL_OR_POSTGRES === "postgres"
+      ? this.loadSingleUserByIdMysql(userId)
+      : this.loadSingleUserByIdMysql(userId);
   }
 
   /**
    * Private methods
    */
+  // add user
+  private async addUserPostgres(newUser: NewUserType) {
+    try {
+      const rows = await postgresConnectionPool`
+                          SELECT * FROM addUser (
+                            ${newUser.email},
+                            ${newUser.hashedPassword},
+                            ${newUser.firstName},
+                            ${newUser.lastName}
+                          )
+                        `;
+
+      if (!rows || rows.length === 0) {
+        throw new Error(
+          "An error occurred while inserting user to the database."
+        );
+      }
+
+      const createdUser: UserType = {
+        userId: rows[0].user_id,
+        email: rows[0].email,
+        hashedPassword: rows[0].hashed_password,
+        firstName: rows[0].first_name,
+        lastName: rows[0].last_name,
+        createdAt: rows[0].created_at,
+      };
+
+      return createdUser;
+    } catch (error: any) {
+      console.error(error);
+      let errorMessage = `An error occurred while creating ${newUser.email}. Please try again.`;
+      if (
+        error.message ===
+        'duplicate key value violates unique constraint "users_email_key"'
+      ) {
+        errorMessage = `The email ${newUser.email} is already taken.`;
+      }
+      throw new Error(errorMessage);
+    }
+  }
+
   private async addUserMysql(newUser: NewUserType) {
     try {
       await mysqlConnectionPool.query("CALL addUser(?,?,?,?)", [
@@ -56,6 +106,7 @@ export class UserModel {
     }
   }
 
+  // load single user by email
   private async loadSingleUserByEmailMysql(email: UserType["email"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
@@ -85,6 +136,7 @@ export class UserModel {
     }
   }
 
+  // load single user by id
   private async loadSingleUserByIdMysql(userId: UserType["userId"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(

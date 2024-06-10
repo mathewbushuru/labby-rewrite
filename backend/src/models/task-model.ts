@@ -15,11 +15,15 @@ export class TaskModel {
    * Public methods
    */
   async addTask(newTask: NewTaskType) {
-    return this.addTaskMysql(newTask);
+    return this.MYSQL_OR_POSTGRES === "postgres"
+      ? this.addTaskMysql(newTask)
+      : this.addTaskMysql(newTask);
   }
 
   async loadAllTasks() {
-    return this.loadAllTasksMysql();
+    return this.MYSQL_OR_POSTGRES === "postgres"
+      ? this.loadAllTasksMysql()
+      : this.loadAllTasksMysql();
   }
 
   /**

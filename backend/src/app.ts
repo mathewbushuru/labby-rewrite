@@ -37,7 +37,7 @@ app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("[Global Error Handler]:", error);
 
   return res.status(500).json({
-    errorMessage: error.message || "Something went wrong.",
+    errorMessage: "Something went wrong.",
     ...error,
   });
 });
