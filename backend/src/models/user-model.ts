@@ -4,7 +4,32 @@ import { mysqlConnectionPool } from "../config/database";
 import { type NewUserType, type UserType } from "../types/user-types";
 
 export class UserModel {
+  /**
+   * Class properties
+   */
+  private readonly MYSQL_OR_POSTGRES = process.env.database as
+    | "mysql"
+    | "postgres";
+
+  /**
+   * Public methods
+   */
   async addUser(newUser: NewUserType) {
+    return this.addUserMysql(newUser);
+  }
+
+  async loadSingleUserByEmail(email: UserType["email"]) {
+    return this.loadSingleUserByEmailMysql(email);
+  }
+
+  async loadSingleUserById(userId: UserType["userId"]) {
+    return this.loadSingleUserByIdMysql(userId);
+  }
+
+  /**
+   * Private methods
+   */
+  private async addUserMysql(newUser: NewUserType) {
     try {
       await mysqlConnectionPool.query("CALL addUser(?,?,?,?)", [
         newUser.email,
@@ -31,7 +56,7 @@ export class UserModel {
     }
   }
 
-  async loadSingleUserByEmail(email: UserType["email"]) {
+  private async loadSingleUserByEmailMysql(email: UserType["email"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
         "CALL loadSingleUserByEmail(?)",
@@ -60,7 +85,7 @@ export class UserModel {
     }
   }
 
-  async loadSingleUserById(userId: UserType["userId"]) {
+  private async loadSingleUserByIdMysql(userId: UserType["userId"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
         "CALL loadSingleUserById(?)",

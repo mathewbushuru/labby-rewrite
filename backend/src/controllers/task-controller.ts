@@ -51,21 +51,8 @@ export default class TaskController {
     } catch (error: any) {
       console.error(error);
       let errorMessage =
+        error.message ||
         "Something went wrong when creating new task, try again.";
-
-      if (
-        error.message ===
-        "Cannot add or update a child row: a foreign key constraint fails (`checklistsdb`.`tasks`, CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`fk_task_creator_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE)"
-      ) {
-        errorMessage = "The creator of this task does not exist.";
-      }
-
-      if (
-        error.message === "Data too long for column 'task_description' at row 1"
-      ) {
-        errorMessage =
-          "Task description is too long. Use maximum of 250 characters.";
-      }
 
       return res.status(500).json({ errorMessage });
     }

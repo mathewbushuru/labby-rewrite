@@ -7,12 +7,7 @@ export type UserType = {
   createdAt: string;
 };
 
-export type NewUserType = {
-  email: string;
-  hashedPassword: string;
-  firstName: string;
-  lastName: string;
-};
+export type NewUserType = Omit<UserType, "userId" | "createdAt">;
 
 export type UserLoginRequestType = {
   email: string;

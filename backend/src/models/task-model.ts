@@ -4,9 +4,32 @@ import { mysqlConnectionPool } from "../config/database";
 import { type NewTaskType, type TaskType } from "../types/task-types";
 
 export class TaskModel {
+  /**
+   * Class properties
+   */
+  private readonly MYSQL_OR_POSTGRES = process.env.database as
+    | "mysql"
+    | "postgres";
+
+  /**
+   * Public methods
+   */
   async addTask(newTask: NewTaskType) {
-    const [insertQueryResult] = await mysqlConnectionPool.query<ResultSetHeader>(
-      `INSERT INTO tasks 
+    return this.addTaskMysql(newTask);
+  }
+
+  async loadAllTasks() {
+    return this.loadAllTasksMysql();
+  }
+
+  /**
+   * Private methods
+   */
+  private async addTaskMysql(newTask: NewTaskType) {
+    try {
+      const [insertQueryResult] =
+        await mysqlConnectionPool.query<ResultSetHeader>(
+          `INSERT INTO tasks 
               (
                 task_name,
                 task_description,
@@ -14,34 +37,54 @@ export class TaskModel {
                 fk_task_creator_id,
                 task_colour_id
               ) VALUES (?, ?, ?, ?, ?);`,
-              [
-                newTask.taskName,
-                newTask.taskDescription,
-                newTask.taskCategory,
-                newTask.taskCreatorId,
-                newTask.taskColourId,
-            ]
-    );
+          [
+            newTask.taskName,
+            newTask.taskDescription,
+            newTask.taskCategory,
+            newTask.taskCreatorId,
+            newTask.taskColourId,
+          ]
+        );
 
-    const [rows] = await mysqlConnectionPool.query<RowDataPacket[]>(
-      `SELECT * FROM tasks WHERE task_id  =  ?`,
-      insertQueryResult.insertId
-    );
+      const [rows] = await mysqlConnectionPool.query<RowDataPacket[]>(
+        `SELECT * FROM tasks WHERE task_id  =  ?`,
+        insertQueryResult.insertId
+      );
 
-    const taskData: TaskType = {
-      taskId: rows[0].task_id,
-      taskName: rows[0].task_name,
-      taskDescription: rows[0].task_description,
-      taskCategory: rows[0].task_category,
-      taskCreatorId: rows[0].fk_task_creator_id,
-      taskColourId: rows[0].task_colour_id,
-      createdAt: rows[0].created_at,
-    };
+      const taskData: TaskType = {
+        taskId: rows[0].task_id,
+        taskName: rows[0].task_name,
+        taskDescription: rows[0].task_description,
+        taskCategory: rows[0].task_category,
+        taskCreatorId: rows[0].fk_task_creator_id,
+        taskColourId: rows[0].task_colour_id,
+        createdAt: rows[0].created_at,
+      };
 
-    return taskData;
+      return taskData;
+    } catch (error: any) {
+      let errorMessage =
+        "Something went wrong when creating new task, try again.";
+
+      if (
+        error.message ===
+        "Cannot add or update a child row: a foreign key constraint fails (`checklistsdb`.`tasks`, CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`fk_task_creator_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE)"
+      ) {
+        errorMessage = "The creator of this task does not exist.";
+      }
+
+      if (
+        error.message === "Data too long for column 'task_description' at row 1"
+      ) {
+        errorMessage =
+          "Task description is too long. Use maximum of 250 characters.";
+      }
+
+      throw new Error(errorMessage);
+    }
   }
 
-  async loadAllTasks() {
+  private async loadAllTasksMysql() {
     const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[]>(
       "SELECT * FROM tasks;"
     );

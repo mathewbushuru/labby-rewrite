@@ -8,10 +8,4 @@ export type TaskType = {
   createdAt: string;
 };
 
-export type NewTaskType = {
-  taskName: string;
-  taskDescription: string;
-  taskCategory: "adopt-me" | "to-do" | "in-progress" | "completed";
-  taskCreatorId: number;
-  taskColourId?: number;
-};
+export type NewTaskType = Omit<TaskType, "taskId" | "createdAt">;

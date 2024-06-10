@@ -6,7 +6,7 @@ export const mysqlConnectionPool = mysql
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_NAME,
+    database: process.env.MYSQL_DB_NAME,
     ssl: {
       rejectUnauthorized: process.env.environment !== "development",
     },
@@ -25,7 +25,7 @@ async function logMySQLVersion() {
 
 export const postgresConnectionPool = postgres({
   host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
+  database: process.env.PG_DB_NAME,
   username: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   port: 5432,

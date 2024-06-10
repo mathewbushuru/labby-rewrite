@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Routes
-app.get("/", (req: Request, res: Response, _next: NextFunction) => {
+app.get("/", (_req: Request, res: Response, _next: NextFunction) => {
   return res.json({ message: "Labby API" });
 });
 
@@ -32,7 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   return res.status(404).json({ errorMessage });
 });
 
-// Error handler route
+// Global error handler route
 app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("[Global Error Handler]:", error);
 
