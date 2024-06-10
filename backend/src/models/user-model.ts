@@ -25,13 +25,13 @@ export class UserModel {
 
   async loadSingleUserByEmail(email: UserType["email"]) {
     return this.MYSQL_OR_POSTGRES === "postgres"
-      ? this.loadSingleUserByEmailMysql(email)
+      ? this.loadSingleUserByEmailPostgres(email)
       : this.loadSingleUserByEmailMysql(email);
   }
 
   async loadSingleUserById(userId: UserType["userId"]) {
     return this.MYSQL_OR_POSTGRES === "postgres"
-      ? this.loadSingleUserByIdMysql(userId)
+      ? this.loadSingleUserByIdPostgres(userId)
       : this.loadSingleUserByIdMysql(userId);
   }
 
@@ -107,6 +107,32 @@ export class UserModel {
   }
 
   // load single user by email
+  private async loadSingleUserByEmailPostgres(email: UserType["email"]) {
+    try {
+      const userRows =
+        await postgresConnectionPool`SELECT * FROM loadSingleUserByEmail(${email})`;
+
+      if (!userRows || userRows.length === 0) {
+        return null;
+      }
+
+      const userData: UserType = {
+        userId: userRows[0].user_id,
+        email: userRows[0].email,
+        hashedPassword: userRows[0].hashed_password,
+        firstName: userRows[0].first_name,
+        lastName: userRows[0].last_name,
+        createdAt: userRows[0].created_at,
+      };
+
+      return userData;
+    } catch (error: any) {
+      const errorMessage = `Error loading user with email ${email} by id.`;
+      console.error(errorMessage, error);
+      throw new Error(errorMessage);
+    }
+  }
+
   private async loadSingleUserByEmailMysql(email: UserType["email"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
@@ -137,6 +163,32 @@ export class UserModel {
   }
 
   // load single user by id
+  private async loadSingleUserByIdPostgres(userId: UserType["userId"]) {
+    try {
+      const userRows =
+        await postgresConnectionPool`SELECT * FROM loadSingleUserById(${userId})`;
+
+      if (!userRows || userRows.length === 0) {
+        return null;
+      }
+
+      const userData: UserType = {
+        userId: userRows[0].user_id,
+        email: userRows[0].email,
+        hashedPassword: userRows[0].hashed_password,
+        firstName: userRows[0].first_name,
+        lastName: userRows[0].last_name,
+        createdAt: userRows[0].created_at,
+      };
+
+      return userData;
+    } catch (error: any) {
+      const errorMessage = `Error loading user with id ${userId} by id.`;
+      console.error(errorMessage, error);
+      throw new Error(errorMessage);
+    }
+  }
+
   private async loadSingleUserByIdMysql(userId: UserType["userId"]) {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[][]>(
