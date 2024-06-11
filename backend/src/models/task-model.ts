@@ -25,7 +25,7 @@ export class TaskModel {
 
   async loadAllTasks() {
     return this.MYSQL_OR_POSTGRES === "postgres"
-      ? this.loadAllTasksMysql()
+      ? this.loadAllTasksPostgres()
       : this.loadAllTasksMysql();
   }
 
@@ -148,21 +148,56 @@ export class TaskModel {
     }
   }
 
+  // load all tasks
+  private async loadAllTasksPostgres() {
+    try {
+      const taskRows = await postgresConnectionPool`SELECT * FROM tasks`;
+
+      if (!taskRows) {
+        throw new Error("Something went wrong when loading tasks.");
+      }
+
+      const allTasks: TaskType[] = taskRows.map((dbTask) => ({
+        taskId: dbTask.task_id,
+        taskName: dbTask.task_name,
+        taskDescription: dbTask.task_description,
+        taskCategory: dbTask.task_category,
+        taskCreatorId: dbTask.fk_task_creator_id,
+        taskColourId: dbTask.task_colour_id,
+        createdAt: dbTask.created_at,
+      }));
+
+      return allTasks;
+    } catch (error: any) {
+      console.error(error);
+      throw new Error("Something went wrong when loading tasks.");
+    }
+  }
+
   private async loadAllTasksMysql() {
-    const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[]>(
-      "SELECT * FROM tasks;"
-    );
+    try {
+      const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[]>(
+        "SELECT * FROM tasks;"
+      );
 
-    const allTasks: TaskType[] = queryResult.map((dbTask) => ({
-      taskId: dbTask.task_id,
-      taskName: dbTask.task_name,
-      taskDescription: dbTask.task_description,
-      taskCategory: dbTask.task_category,
-      taskCreatorId: dbTask.fk_task_creator_id,
-      taskColourId: dbTask.task_colour_id,
-      createdAt: dbTask.created_at,
-    }));
+      if (!queryResult) {
+        throw new Error("Something went wrong when loading tasks.");
+      }
 
-    return allTasks;
+      const allTasks: TaskType[] = queryResult.map((dbTask) => ({
+        taskId: dbTask.task_id,
+        taskName: dbTask.task_name,
+        taskDescription: dbTask.task_description,
+        taskCategory: dbTask.task_category,
+        taskCreatorId: dbTask.fk_task_creator_id,
+        taskColourId: dbTask.task_colour_id,
+        createdAt: dbTask.created_at,
+      }));
+
+      return allTasks;
+    } catch (error: any) {
+      console.error(error);
+      throw new Error("Something went wrong when loading tasks.");
+    }
   }
 }
