@@ -41,7 +41,7 @@ export class UserModel {
   // add user
   private async addUserPostgres(newUser: NewUserType) {
     try {
-      const rows = await postgresConnectionPool`
+      const userRows = await postgresConnectionPool`
                           SELECT * FROM addUser (
                             ${newUser.email},
                             ${newUser.hashedPassword},
@@ -50,19 +50,19 @@ export class UserModel {
                           )
                         `;
 
-      if (!rows || rows.length === 0) {
+      if (!userRows || userRows.length === 0) {
         throw new Error(
           "An error occurred while inserting user to the database."
         );
       }
 
       const createdUser: UserType = {
-        userId: rows[0].user_id,
-        email: rows[0].email,
-        hashedPassword: rows[0].hashed_password,
-        firstName: rows[0].first_name,
-        lastName: rows[0].last_name,
-        createdAt: rows[0].created_at,
+        userId: userRows[0].user_id,
+        email: userRows[0].email,
+        hashedPassword: userRows[0].hashed_password,
+        firstName: userRows[0].first_name,
+        lastName: userRows[0].last_name,
+        createdAt: userRows[0].created_at,
       };
 
       return createdUser;
@@ -88,7 +88,7 @@ export class UserModel {
         newUser.lastName,
       ]);
 
-      const newUserDataInDb = await this.loadSingleUserByEmail(newUser.email);
+      const newUserDataInDb = await this.loadSingleUserByEmailMysql(newUser.email);
       if (!newUserDataInDb) {
         throw new Error(
           "An error occurred while inserting user to the database."

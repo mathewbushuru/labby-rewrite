@@ -1,6 +1,9 @@
 import { type RowDataPacket, type ResultSetHeader } from "mysql2";
 
-import { mysqlConnectionPool } from "../config/database";
+import {
+  mysqlConnectionPool,
+  postgresConnectionPool,
+} from "../config/database";
 import { type NewTaskType, type TaskType } from "../types/task-types";
 
 export class TaskModel {
@@ -16,7 +19,7 @@ export class TaskModel {
    */
   async addTask(newTask: NewTaskType) {
     return this.MYSQL_OR_POSTGRES === "postgres"
-      ? this.addTaskMysql(newTask)
+      ? this.addTaskPostgres(newTask)
       : this.addTaskMysql(newTask);
   }
 
@@ -29,6 +32,56 @@ export class TaskModel {
   /**
    * Private methods
    */
+  // add task
+  private async addTaskPostgres(newTask: NewTaskType) {
+    try {
+      const taskRows = await postgresConnectionPool`
+                          SELECT * FROM addTask(
+                            ${newTask.taskName},
+                            ${newTask.taskDescription},
+                            ${newTask.taskCategory},
+                            ${newTask.taskCreatorId},
+                            ${newTask.taskColourId}
+                          )
+                          `;
+
+      if (!taskRows || taskRows.length === 0) {
+        throw new Error(
+          "Something went wrong when creating new task, try again."
+        );
+      }
+
+      const createdTask: TaskType = {
+        taskId: taskRows[0].task_id,
+        taskName: taskRows[0].task_name,
+        taskDescription: taskRows[0].task_description,
+        taskCategory: taskRows[0].task_category,
+        taskCreatorId: taskRows[0].fk_task_creator_id,
+        taskColourId: taskRows[0].task_colour_id,
+        createdAt: taskRows[0].created_at,
+      };
+
+      return createdTask;
+    } catch (error: any) {
+      console.error(error);
+      let errorMessage =
+        "Something went wrong when creating new task, try again.";
+
+      if (
+        error.message ===
+        'insert or update on table "tasks" violates foreign key constraint "tasks_fk_task_creator_id_fkey"'
+      ) {
+        errorMessage = "The creator of this task does not exist.";
+      }
+
+      if (error.message === "value too long for type character varying(255)") {
+        errorMessage =
+          "Task description is too long. Use maximum of 250 characters.";
+      }
+
+      throw new Error(errorMessage);
+    }
+  }
   private async addTaskMysql(newTask: NewTaskType) {
     try {
       const [insertQueryResult] =
@@ -55,7 +108,13 @@ export class TaskModel {
         insertQueryResult.insertId
       );
 
-      const taskData: TaskType = {
+      if (!rows || rows.length === 0) {
+        throw new Error(
+          "Something went wrong when creating new task, try again."
+        );
+      }
+
+      const createdTask: TaskType = {
         taskId: rows[0].task_id,
         taskName: rows[0].task_name,
         taskDescription: rows[0].task_description,
@@ -65,8 +124,9 @@ export class TaskModel {
         createdAt: rows[0].created_at,
       };
 
-      return taskData;
+      return createdTask;
     } catch (error: any) {
+      console.error(error);
       let errorMessage =
         "Something went wrong when creating new task, try again.";
 
