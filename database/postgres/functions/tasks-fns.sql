@@ -1,4 +1,4 @@
-\c checklistsDB;
+\c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS addTask(VARCHAR, VARCHAR, VARCHAR, BIGINT, SMALLINT);
 
@@ -20,18 +20,18 @@ CREATE OR REPLACE FUNCTION addTask(
 ) AS $$
 BEGIN
     RETURN QUERY
-    INSERT INTO tasks (
+    INSERT INTO labby_tasks (
         task_name, task_description, task_category, fk_task_creator_id, task_colour_id, created_at
     ) VALUES (
         _task_name, _task_description, _task_category, _fk_task_creator_id, _task_colour_id, now()
     )
     RETURNING 
-        tasks.task_id,
-        tasks.task_name,
-        tasks.task_description,
-        tasks.task_category,
-        tasks.fk_task_creator_id,
-        tasks.task_colour_id,
-        tasks.created_at;
+        labby_tasks.task_id,
+        labby_tasks.task_name,
+        labby_tasks.task_description,
+        labby_tasks.task_category,
+        labby_tasks.fk_task_creator_id,
+        labby_tasks.task_colour_id,
+        labby_tasks.created_at;
 END;
 $$ LANGUAGE plpgsql;

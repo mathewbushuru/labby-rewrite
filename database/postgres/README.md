@@ -1,4 +1,4 @@
-I have replaced some procedures in the MySQL directory with functions in postgres. I am using functions for simpler tasks that don't require advanced transaction control like creating tables
+I have replaced procedures in the MySQL directory with functions in postgres. I am using functions for simpler tasks that don't require advanced transaction control like creating tables
 
 ##### Initializing the database locally
 

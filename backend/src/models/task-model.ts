@@ -151,7 +151,7 @@ export class TaskModel {
   // load all tasks
   private async loadAllTasksPostgres() {
     try {
-      const taskRows = await postgresConnectionPool`SELECT * FROM tasks`;
+      const taskRows = await postgresConnectionPool`SELECT * FROM labby_tasks`;
 
       if (!taskRows) {
         throw new Error("Something went wrong when loading tasks.");

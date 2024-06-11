@@ -1,12 +1,12 @@
-\c checklistsDB;
+\c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS populateTasks();
 
 -- populateTasks()
 CREATE OR REPLACE FUNCTION populateTasks() RETURNS VOID AS $$
 BEGIN
-    DELETE FROM tasks;
-    INSERT INTO tasks (
+    DELETE FROM labby_tasks;
+    INSERT INTO labby_tasks (
         task_name,
         task_description,
         task_category,

@@ -1,12 +1,12 @@
-\c checklistsDB;
+\c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS createUsers();
 
 CREATE OR REPLACE FUNCTION createUsers() RETURNS void AS $$
 BEGIN
-    DROP TABLE IF EXISTS tasks;         -- has fk to user_id
-    DROP TABLE IF EXISTS users;
-    CREATE TABLE users (
+    DROP TABLE IF EXISTS labby_tasks;         -- has fk to user_id
+    DROP TABLE IF EXISTS labby_users;
+    CREATE TABLE labby_users (
         user_id BIGSERIAL PRIMARY KEY,
         email VARCHAR(255) NOT NULL UNIQUE,
         hashed_password VARCHAR(255) NOT NULL,

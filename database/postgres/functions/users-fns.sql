@@ -1,4 +1,4 @@
-\c checklistsDB;
+\c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS addUser(VARCHAR, VARCHAR, VARCHAR, VARCHAR);
 DROP FUNCTION IF EXISTS loadSingleUserById(BIGINT);
@@ -20,15 +20,15 @@ CREATE OR REPLACE FUNCTION addUser(
 ) AS $$
 BEGIN
     RETURN QUERY
-    INSERT INTO users (email, hashed_password, first_name, last_name, created_at)
+    INSERT INTO labby_users (email, hashed_password, first_name, last_name, created_at)
     VALUES (_email, _hashed_password, _first_name, _last_name, now())
     RETURNING 
-        users.user_id, 
-        users.email, 
-        users.hashed_password, 
-        users.first_name, 
-        users.last_name, 
-        users.created_at;
+        labby_users.user_id, 
+        labby_users.email, 
+        labby_users.hashed_password, 
+        labby_users.first_name, 
+        labby_users.last_name, 
+        labby_users.created_at;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -46,14 +46,14 @@ CREATE OR REPLACE FUNCTION loadSingleUserById(
 BEGIN
     RETURN QUERY
     SELECT 
-        users.user_id, 
-        users.email, 
-        users.hashed_password, 
-        users.first_name, 
-        users.last_name, 
-        users.created_at
-    FROM users
-    WHERE users.user_id = _user_id;
+        labby_users.user_id, 
+        labby_users.email, 
+        labby_users.hashed_password, 
+        labby_users.first_name, 
+        labby_users.last_name, 
+        labby_users.created_at
+    FROM labby_users
+    WHERE labby_users.user_id = _user_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -71,13 +71,13 @@ CREATE OR REPLACE FUNCTION loadSingleUserByEmail(
 BEGIN
     RETURN QUERY
     SELECT 
-        users.user_id, 
-        users.email, 
-        users.hashed_password, 
-        users.first_name, 
-        users.last_name, 
-        users.created_at
-    FROM users
-    WHERE users.email = _email;
+        labby_users.user_id, 
+        labby_users.email, 
+        labby_users.hashed_password, 
+        labby_users.first_name, 
+        labby_users.last_name, 
+        labby_users.created_at
+    FROM labby_users
+    WHERE labby_users.email = _email;
 END;
 $$ LANGUAGE plpgsql;
