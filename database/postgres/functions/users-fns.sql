@@ -1,4 +1,4 @@
-\c labbyRewriteDB;
+-- \c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS addUser(VARCHAR, VARCHAR, VARCHAR, VARCHAR);
 DROP FUNCTION IF EXISTS loadSingleUserById(BIGINT);

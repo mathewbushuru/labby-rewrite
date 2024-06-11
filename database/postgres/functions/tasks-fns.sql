@@ -1,4 +1,4 @@
-\c labbyRewriteDB;
+-- \c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS addTask(VARCHAR, VARCHAR, VARCHAR, BIGINT, SMALLINT);
 

@@ -1,4 +1,4 @@
-\c labbyRewriteDB;
+-- \c labbyRewriteDB;
 
 DROP FUNCTION IF EXISTS createTasks();
 
