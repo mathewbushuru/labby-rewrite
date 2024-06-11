@@ -2,7 +2,7 @@
 
 - Install MySQL
 - On your terminal `mysql -u username -p`
-- In the MySQL shell, `USE checklistsDB`
+- In the MySQL shell, `USE labbyRewriteDB`
 - Run database scripts in the shell `source path/to/script.sql`
 
 ##### Creating database tables for first time (order)

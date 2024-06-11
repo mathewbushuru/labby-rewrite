@@ -1,13 +1,13 @@
-USE `checklistsDB`;
+USE `labbyRewriteDB`;
 
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS `createUsers`;
 CREATE PROCEDURE `createUsers` ()
 BEGIN
-DROP TABLE IF EXISTS `tasks`;       -- has fk to user_id
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+DROP TABLE IF EXISTS `labby_tasks`;       -- has fk to user_id
+DROP TABLE IF EXISTS `labby_users`;
+CREATE TABLE `labby_users` (
     user_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,

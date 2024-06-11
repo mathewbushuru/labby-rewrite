@@ -3,10 +3,10 @@
 
 SHOW DATABASES;
 
-USE checklistsDB;
+USE labbyRewriteDB;
 
 SHOW TABLES;
 
-SELECT * FROM users;
+SELECT * FROM labby_users;
 
-SELECT * FROM tasks;
+SELECT * FROM labby_tasks;

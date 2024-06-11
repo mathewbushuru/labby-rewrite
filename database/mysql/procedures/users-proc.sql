@@ -1,4 +1,4 @@
-USE `checklistsDB`;
+USE `labbyRewriteDB`;
 
 DROP PROCEDURE IF EXISTS `addUser`;
 DROP PROCEDURE IF EXISTS `loadSingleUserById`;
@@ -14,7 +14,7 @@ CREATE PROCEDURE `addUser` (
     IN `_last_name` VARCHAR(255)
 )
 BEGIN
-    INSERT INTO `users` (
+    INSERT INTO `labby_users` (
         `email`,
         `hashed_password`,
         `first_name`,
@@ -33,7 +33,7 @@ CREATE PROCEDURE `loadSingleUserById` (
     IN `_user_id` BIGINT UNSIGNED
 )
 BEGIN
-    SELECT * FROM users WHERE user_id = _user_id;
+    SELECT * FROM labby_users WHERE user_id = _user_id;
 END $$
 
 -- loadSingleUserByEmail
@@ -41,7 +41,7 @@ CREATE PROCEDURE `loadSingleUserByEmail` (
     IN `_email` VARCHAR(255)
 )
 BEGIN
-    SELECT * FROM users WHERE email = _email;
+    SELECT * FROM labby_users WHERE email = _email;
 END $$
 
 DELIMITER ;

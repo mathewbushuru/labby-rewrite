@@ -1,10 +1,10 @@
-USE `checklistsDB`;
+USE `labbyRewriteDB`;
 
 DROP PROCEDURE IF EXISTS `addTask`;
 
 DELIMITER $$
 
--- addTask (TODO: select query returns [] on some queries, use direct db calls for now)
+-- addTask
 CREATE PROCEDURE `addTask` (
     IN _task_name VARCHAR(100),
     IN _task_description VARCHAR(255),
@@ -13,7 +13,7 @@ CREATE PROCEDURE `addTask` (
     IN _task_colour_id TINYINT UNSIGNED
 )
 BEGIN
-    INSERT INTO tasks (
+    INSERT INTO labby_tasks (
         task_name,
         task_description,
         task_category,
@@ -27,7 +27,7 @@ BEGIN
         _fk_task_creator_id,
         _task_colour_id
     );
-    SELECT * FROM tasks WHERE task_id = LAST_INSERT_ID();
+    SELECT * FROM labby_tasks WHERE task_id = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;

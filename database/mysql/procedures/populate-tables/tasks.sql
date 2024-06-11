@@ -1,4 +1,4 @@
-USE checklistsDB;
+USE labbyRewriteDB;
 
 DROP PROCEDURE IF EXISTS `populateTasks`;
 
@@ -7,8 +7,8 @@ DELIMITER $$
 -- populateTasks
 CREATE PROCEDURE `populateTasks`()
 BEGIN 
-    DELETE FROM tasks;
-    INSERT INTO tasks (
+    DELETE FROM labby_tasks;
+    INSERT INTO labby_tasks (
         task_name,
         task_description,
         task_category,

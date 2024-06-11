@@ -86,7 +86,7 @@ export class TaskModel {
     try {
       const [insertQueryResult] =
         await mysqlConnectionPool.query<ResultSetHeader>(
-          `INSERT INTO tasks 
+          `INSERT INTO labby_tasks 
               (
                 task_name,
                 task_description,
@@ -104,7 +104,7 @@ export class TaskModel {
         );
 
       const [rows] = await mysqlConnectionPool.query<RowDataPacket[]>(
-        `SELECT * FROM tasks WHERE task_id  =  ?`,
+        `SELECT * FROM labby_tasks WHERE task_id  =  ?`,
         insertQueryResult.insertId
       );
 
@@ -177,7 +177,7 @@ export class TaskModel {
   private async loadAllTasksMysql() {
     try {
       const [queryResult] = await mysqlConnectionPool.query<RowDataPacket[]>(
-        "SELECT * FROM tasks;"
+        "SELECT * FROM labby_tasks;"
       );
 
       if (!queryResult) {
