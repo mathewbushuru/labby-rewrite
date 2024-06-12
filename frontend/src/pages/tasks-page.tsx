@@ -256,17 +256,7 @@ function TasksBoard() {
 
   const allTasksData = useAppSelector((state) => state.tasks);
 
-  const dragStartHandler = (dragStartData: DragStart) => {
-    const { draggableId: taskId, source } = dragStartData;
-
-    const taskName = allTasksData.tasks[taskId].taskName;
-    const sourceColumnName =
-      allTasksData.taskCategories[source.droppableId].name;
-
-    toast.info("Drag start", {
-      description: `'${taskName}' task from column '${sourceColumnName}'.`,
-    });
-  };
+  const dragStartHandler = (_dragStartData: DragStart) => {};
 
   const dragUpdateHandler = (_dragUpdateData: DragUpdate) => {};
 
@@ -307,9 +297,9 @@ function TasksBoard() {
       };
 
       dispatch(setAllTasksData(updatedDndData));
-      toast.success("Drag end", {
-        description: `'${taskName}' task from position ${source.index + 1} to position ${destination.index + 1}.`,
-      });
+      toast.success(
+        `'${taskName}' task. '${sourceColumn.name}' position ${source.index + 1} -> Position ${destination.index + 1}.`,
+      );
     } else {
       const sourceColumnTaskIds = Array.from(sourceColumn.taskIds);
       const destinationColumnTaskIds = Array.from(destinationColumn.taskIds);
@@ -336,9 +326,9 @@ function TasksBoard() {
       };
 
       dispatch(setAllTasksData(updatedDndData));
-      toast.success("Drag end", {
-        description: `'${taskName}' task from '${sourceColumn.name}' to '${destinationColumn.name}'.`,
-      });
+      toast.success(
+        `'${taskName}' task. '${sourceColumn.name}' -> '${destinationColumn.name}'.`,
+      );
     }
   };
   return (
