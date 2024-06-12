@@ -1,33 +1,41 @@
 {
   "name": "labby-backend",
-  "version": "1.0.0",
-  "description": "NodeJS Backend for Labby",
-  "main": "index.js",
-  "repository": "git@github.com:ubclaunchpad/labby.git",
-  "license": "MIT",
-  "type": "module",
-  "private": true,
+  "version": "0.0.0",
+  "main": "./dist/server.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "npm run build",
-    "test": "jest"
+    "dev": "nodemon ./src/server.ts",
+    "start": "node ./dist/server.js",
+    "build": "tsc",
+    "test": "vitest run --coverage"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-jwt": "^8.4.1",
-    "jsonwebtoken": "^9.0.0",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.9.3"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.8",
+    "postgres": "^3.4.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.3",
-    "@babel/preset-env": "^7.19.4",
-    "babel-jest": "^29.2.1",
-    "jest": "^29.2.1",
-    "supertest": "^6.3.0"
+    "@types/bcrypt": "^5.0.2",
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.12",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^1.6.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.0.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": "18"
   }
 }

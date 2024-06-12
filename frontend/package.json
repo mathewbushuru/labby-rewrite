@@ -1,84 +1,35 @@
 {
   "name": "labby-frontend",
-  "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@mui/material": "^5.10.11",
-    "@reduxjs/toolkit": "^1.8.6",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.0.1",
-    "@testing-library/user-event": "^14.1.1",
-    "@uidotdev/usehooks": "^2.0.1",
-    "antd": "^4.23.6",
-    "apexcharts": "^3.37.1",
-    "aws-sdk": "^2.1243.0",
-    "axios": "^1.1.3",
-    "canvas": "^2.11.2",
-    "clsx": "^1.2.1",
-    "date-fns": "^2.29.3",
-    "html2canvas": "^1.4.1",
-    "html2pdf.js": "^0.10.1",
-    "jspdf": "^2.5.1",
-    "react": "^18.2.0",
-    "react-apexcharts": "^1.4.0",
-    "react-beautiful-dnd": "^13.1.1",
-    "react-date-range": "^1.4.0",
-    "react-dom": "^18.2.0",
-    "react-dropzone": "^14.2.3",
-    "react-hook-form": "^7.43.1",
-    "react-redux": "^8.0.1",
-    "react-router-dom": "^6.6.0",
-    "react-scripts": "5.0.1",
-    "react-select": "^5.5.0",
-    "react-toastify": "^9.1.1",
-    "react-uuid": "^2.0.0",
-    "reactjs-popup": "^2.0.5",
-    "recharts": "^2.4.3",
-    "redux-saga": "^1.2.1",
-    "styled-components": "^5.3.6",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.0"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "coverage": "react-scripts test --coverage",
-    "e2e": "testcafe chrome e2e/*.test.js"
+    "dev": "vite --port=3000 --open --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "jest": {
-    "transformIgnorePatterns": [
-      "/node_modules/(?!axios|antd|@ant-design|@uidotdev/usehooks|rc-.+?|@babel/runtime).+(js|jsx)$"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-select": "^2.0.0",
+    "@reduxjs/toolkit": "^2.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.2",
+    "react-router-dom": "^6.23.1",
+    "sonner": "^1.4.41"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.5",
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
-    "redux-saga-test-plan": "^4.0.6",
-    "testcafe": "^2.6.2"
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
   }
 }

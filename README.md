@@ -1,8 +1,10 @@
+This is a full-rewrite from scratch of `Labby` which is a lab management system that we built for BC Cancer. This fork removes BC Cancer specific business logic and generalizes the app for any use case. Some highlights include migration from JavaScript to TypeScript, making the design mobile responsive, managing server state with Redux Toolkit (RTK) Query instead of Redux Saga, and modifying the backend to support both PostgreSQL and MySQL databases.
+
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/ubclaunchpad/labby">
-    <img src="frontend/src/assets/LogoIcon.png" alt="Logo" height="100" resize>
+    <img src="frontend/public/LogoIcon.png" alt="Logo" height="100" resize>
   </a>
   <h3 align="center">Labby</h3>
 </p>
