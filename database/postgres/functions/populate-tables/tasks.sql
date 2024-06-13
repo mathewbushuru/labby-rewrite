@@ -16,11 +16,11 @@ BEGIN
         created_at
     ) 
     VALUES
-        ('Acme Ecommerce App', 'acme-admin.mathewbushuru.com', 'in-progress', 0, 1, 1, now()),
-        ('Checklists App', 'checklists.mathewbushuru.com', 'in-progress', 1, 1, 2, now()),
-        ('Flix App', 'movies.mathewbushuru.com', 'to-do',0, 1, 3, now()),
-        ('Outfits App', 'outfits.mathewbushuru.com', 'adopt-me', 0, 1, 4, now()),
-        ('Battleship Game', 'battleship.mathewbushuru.com', 'completed', 0, 1, 5, now());
+        ('Acme Ecommerce App', 'acme-admin.mathewbushuru.com', 'in-progress', 100, 1, 1, now()),
+        ('Checklists App', 'checklists.mathewbushuru.com', 'in-progress', 200, 1, 2, now()),
+        ('Flix App', 'movies.mathewbushuru.com', 'to-do',100, 1, 3, now()),
+        ('Outfits App', 'outfits.mathewbushuru.com', 'adopt-me', 100, 1, 4, now()),
+        ('Battleship Game', 'battleship.mathewbushuru.com', 'completed', 100, 1, 5, now());
 END;
 $$ LANGUAGE  plpgsql;
 
