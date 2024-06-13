@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import taskApi from "@/api/task-api";
-import { type AllTasksDataType } from "@/types/task-types";
+import taskApi from "@/modules/tasks/api/task-api";
+import { type AllTasksDataType } from "@/modules/tasks/types/task-types";
 
 const initialAllTasksState: AllTasksDataType = {
   tasks: {},

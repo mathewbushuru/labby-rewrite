@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { useSignupMutation } from "@/api/auth-api";
+import { useSignupMutation } from "@/modules/auth/api/auth-api";
 
 import { InputBorderBottom } from "@/components/ui/input";
 import { PrimaryButton, PrimaryButtonLink } from "@/components/ui/button";
 
-import { type SignupRequestType } from "@/types/user-types";
+import { type SignupRequestType } from "@/modules/auth/types/auth-types";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function SignupPage() {
     try {
       await signupTrigger(signupData).unwrap();
 
-      toast.success("Account creation successful. Log in.")
+      toast.success("Account creation successful. Log in.");
 
       navigate("/login", {
         state: { signupEmail: email },
@@ -44,9 +44,9 @@ export default function SignupPage() {
     } catch (error: any) {
       console.log(error);
 
-      const errorMessage = error?.data?.errorMessage ||  "Something went wrong.";
+      const errorMessage = error?.data?.errorMessage || "Something went wrong.";
       toast.error("Signup error", {
-        description: errorMessage
+        description: errorMessage,
       });
     }
   };
@@ -54,7 +54,10 @@ export default function SignupPage() {
   return (
     <div className="flex h-screen p-8 sm:p-0">
       {/* Desktop left   */}
-      <form onSubmit={handleSignup} className="flex-1 space-y-7 sm:mt-32 2xl:mt-44">
+      <form
+        onSubmit={handleSignup}
+        className="flex-1 space-y-7 sm:mt-32 2xl:mt-44"
+      >
         <img src="/LogoIcon.png" className="mx-auto h-20 w-16 object-cover" />
 
         <p className="mx-auto max-w-sm text-center text-2xl font-semibold">
