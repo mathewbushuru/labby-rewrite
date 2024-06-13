@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import LoginPage from "@/modules/auth/pages/login-page";
 import SignupPage from "@/modules/auth/pages/signup-page";
-import TasksPage from "@/modules/tasks/pages/tasks-page";
+import TasksPage from "@/modules/tasks/pages/task-page";
 
 export const publicRouter = createBrowserRouter([
   {
