@@ -1,11 +1,11 @@
-import checklistsApi from ".";
+import checklistsApi from "@/api";
 
+import { type BackendUserType } from "@/types/user-types";
 import {
   type LoginRequestType,
   type LoginResponseType,
   type SignupRequestType,
-  type BackendUserType,
-} from "@/types/user-types";
+} from "@/modules/auth/types/auth-types";
 
 const authApi = checklistsApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -24,6 +24,7 @@ const authApi = checklistsApi.injectEndpoints({
         method: "POST",
         body: signupData,
       }),
+      invalidatesTags: [],
     }),
   }),
 });

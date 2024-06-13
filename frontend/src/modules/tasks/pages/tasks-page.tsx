@@ -9,14 +9,17 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
-import { useLoadAllTasksQuery, useCreateTaskMutation } from "@/api/task-api";
-import { useAppSelector, useAppDispatch } from "@/store/store";
+import {
+  useLoadAllTasksQuery,
+  useCreateTaskMutation,
+} from "@/modules/tasks/api/task-api";
+import { useAppSelector, useAppDispatch } from "@/store";
 import {
   setAllTasksData,
   resetAllTasksData,
   filterTasksOnSearch,
   updateTaskData,
-} from "@/store/features/tasks-slice";
+} from "@/modules/tasks/store/tasks-slice";
 
 import { isServerErrorResponse } from "@/lib/utils";
 
@@ -42,7 +45,7 @@ import {
   type TaskType,
   type TaskCategoryType,
   type AllTasksDataType,
-} from "@/types/task-types";
+} from "@/modules/tasks/types/task-types";
 
 export default function TasksPage() {
   const [showMobileSideNavbar, setShowMobileSideNavbar] = useState(false);

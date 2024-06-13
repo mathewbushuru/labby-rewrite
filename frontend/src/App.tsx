@@ -1,39 +1,11 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 import { Toaster } from "sonner";
 
-import { store, useAppSelector } from "@/store/store";
+import { store, useAppSelector } from "@/store";
 import { useGetRootQuery } from "@/api";
 
-import LoginPage from "@/pages/login-page";
-import SignupPage from "@/pages/signup-page";
-import TasksPage from "@/pages/tasks-page";
-
-const publicRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <LoginPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />,
-  },
-]);
-
-const privateRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <TasksPage />,
-  },
-  {
-    path: "/*",
-    element: <TasksPage />,
-  },
-]);
+import { publicRouter, privateRouter } from "@/routes";
 
 function AppRouter() {
   const { data: _ } = useGetRootQuery();

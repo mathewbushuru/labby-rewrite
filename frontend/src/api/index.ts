@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { type RootState } from "@/store/store";
+import { type RootState } from "@/store";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -25,6 +25,8 @@ const checklistsApi = createApi({
       query: () => `/`,
     }),
     // other endpoints injected from different files
+    // ... @/modules/auth/api/auth-api.ts
+    // ... @/modules/tasks/api/task-api.ts
   }),
 });
 

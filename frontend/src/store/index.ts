@@ -7,8 +7,8 @@ import {
 } from "react-redux";
 
 import checklistsApi from "@/api";
-import authReducer from "@/store/features/auth-slice";
-import tasksReducer from "@/store/features/tasks-slice";
+import authReducer from "@/modules/auth/store/auth-slice";
+import tasksReducer from "@/modules/tasks/store/tasks-slice";
 
 export const store = configureStore({
   reducer: {
