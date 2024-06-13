@@ -10,6 +10,7 @@ BEGIN
         task_name VARCHAR(100) NOT NULL,
         task_description VARCHAR(255) NOT NULL,
         task_category VARCHAR(20) DEFAULT 'adopt-me',
+        task_category_position SMALLINT NOT NULL,
         fk_task_creator_id BIGINT NOT NULL,
         task_colour_id SMALLINT NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

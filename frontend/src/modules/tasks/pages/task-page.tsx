@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLoadAllTasksQuery } from "@/modules/tasks/api/task-api";
 
 import SideNavbar from "@/components/side-navbar";
+
 import TaskBoard from "@/modules/tasks/components/task-board";
 import SearchTasksInput from "@/modules/tasks/components/search-tasks-input";
 import NewTaskModal from "@/modules/tasks/components/new-task-modal";
